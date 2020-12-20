@@ -1,4 +1,4 @@
-package com.frontendnative;
+package com.movenicevn.reactnative;
 
 import android.app.Application;
 import android.content.Context;

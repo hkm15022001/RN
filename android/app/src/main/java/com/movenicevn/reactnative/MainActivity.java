@@ -1,4 +1,4 @@
-package com.frontendnative;
+package com.movenicevn.reactnative;
 
 import com.facebook.react.ReactActivity;
 

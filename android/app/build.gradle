@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.frontendnative"
+        applicationId "com.movenicevn.reactnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
