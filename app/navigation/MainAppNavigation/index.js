@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, Button} from 'react-native';
+import {View, Text, Button, Alert} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppStateStore from '../../store/state';
+import {BACKEND_API_URL} from '../../vars';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -19,14 +20,6 @@ function DetailsScreen() {
 
   React.useEffect(() => {
     validateToken();
-    // messaging()
-    //   .getToken()
-    //   .then((token) => {
-    //     return saveTokenToDatabase(token);
-    //   });
-    // return messaging().onTokenRefresh((token) => {
-    //   saveTokenToDatabase(token);
-    // });
   }, [validateToken]);
 
   return (
@@ -91,18 +84,81 @@ function HomeStackScreen() {
   );
 }
 
-// async function saveTokenToDatabase(token) {
-//   // Assume user is already signed in
-//   const userId = auth().currentUser.uid;
+async function saveTokenToDatabase(accessToken, appToken) {
+  const requestOption = {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      Authorization: accessToken,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      token: appToken,
+    }),
+  };
 
-//   // Add the token to the users datastore
-//   await firestore()
-//     .collection('users')
-//     .doc(userId)
-//     .update({
-//       tokens: firestore.FieldValue.arrayUnion(token),
-//     });
-// }
+  return await fetch(BACKEND_API_URL + '/fcm-auth/save-token', requestOption)
+    .then((res) => {
+      if (res.status !== 200) {
+        return Promise.reject('Unauthorized');
+      }
+      return res;
+    })
+    .catch((error) => {
+      return null;
+    });
+}
+
+async function requestUserPermission() {
+  const authStatus = await messaging().requestPermission();
+  const enabled =
+    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+  if (enabled) {
+    console.log('Authorization status:', authStatus);
+  }
+}
+
+const showAlert = (title, body) => {
+  Alert.alert(
+    title,
+    body,
+    [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+    {cancelable: false},
+  );
+};
+
+async function createNotificationListeners() {
+  /*
+   * Triggered for data only payload in foreground
+   * */
+  messaging().onMessage(async (remoteMessage) => {
+    Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+  });
+
+  // Assume a message-notification contains a "type" property in the data payload of the screen to open
+  messaging().onNotificationOpenedApp((remoteMessage) => {
+    console.log(
+      'Notification caused app to open from background state:',
+      remoteMessage.notification,
+    );
+    // navigation.navigate(remoteMessage.data.type);
+  });
+
+  // Check whether an initial notification is available
+  messaging()
+    .getInitialNotification()
+    .then((remoteMessage) => {
+      if (remoteMessage) {
+        console.log(
+          'Notification caused app to open from quit state:',
+          remoteMessage.notification,
+        );
+        // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+      }
+    });
+}
 
 // Define parameter for Navigation
 const Tab = createBottomTabNavigator();
@@ -117,15 +173,20 @@ export default function MainAppNavigation() {
 
   React.useEffect(() => {
     reOpenApp();
-    // messaging()
-    //   .getToken()
-    //   .then((token) => {
-    //     return saveTokenToDatabase(token);
-    //   });
-    // return messaging().onTokenRefresh((token) => {
-    //   saveTokenToDatabase(token);
-    // });
-  }, [reOpenApp]);
+    requestUserPermission();
+    createNotificationListeners();
+    messaging()
+      .getToken()
+      .then((appToken) => {
+        return saveTokenToDatabase(accessToken, appToken);
+      });
+    return () => {
+      messaging().onTokenRefresh((appToken) => {
+        saveTokenToDatabase(accessToken, appToken);
+      });
+      createNotificationListeners();
+    };
+  }, [reOpenApp, accessToken]);
 
   if (isLoading) {
     return <SplashScreen />;
