@@ -8,11 +8,14 @@
 
 import React from 'react';
 import MainAppNavigation from './app/navigation/MainAppNavigation';
+import AppStateStore from './app/store/state';
 
 const App: () => React$Node = () => {
   return (
     <>
-      <MainAppNavigation />
+      <AppStateStore.Provider>
+        <MainAppNavigation />
+      </AppStateStore.Provider>
     </>
   );
 };

@@ -8,17 +8,14 @@ import {
   Alert,
 } from 'react-native';
 
-import AuthContext from '../../navigation/AuthContext';
 import {BACKEND_API_URL} from '../../vars';
 
 export default function SignInScreen() {
   const [email, setEmail] = React.useState('admin@gmail.com');
   const [password, setPassword] = React.useState('12345678');
 
-  const {signIn} = React.useContext(AuthContext);
-
   function handleLogin() {
-    fetch(BACKEND_API_URL + '/user-auth/app/loginJSON', {
+    fetch(BACKEND_API_URL + '/app-auth/loginJSON', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -35,7 +32,7 @@ export default function SignInScreen() {
         }
         return res.json();
       })
-      .then((json) => signIn(json))
+      .then((json) => console.log(json))
       .catch((error) => Alert.alert(error));
   }
 
