@@ -35,7 +35,7 @@ export default function SignInScreen() {
         }
         return res.json();
       })
-      .then((json) => signIn(json.token_type + json.access_token))
+      .then((json) => signIn(json))
       .catch((error) => Alert.alert(error));
   }
 

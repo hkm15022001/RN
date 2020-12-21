@@ -34,7 +34,7 @@ const validateAccessToken = async () => {
   let token = values[3][1] + values[0][1];
   let time = Math.floor(Date.now() / 1000);
   if (time > values[1][1]) {
-    fetch(BACKEND_API_URL + '/app-auth/access-token/get-new', {
+    return await fetch(BACKEND_API_URL + '/app-auth/access-token/get-new', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -46,7 +46,6 @@ const validateAccessToken = async () => {
       }),
     })
       .then((res) => {
-        console.log(res);
         if (res.status !== 201) {
           return Promise.reject('Unauthorized');
         }
@@ -78,6 +77,7 @@ const bootstrapAsync = async () => {
     ]);
   } catch (e) {
     // read error
+    console.log(e);
   }
   if (
     values[0][1] === null ||
@@ -85,13 +85,13 @@ const bootstrapAsync = async () => {
     values[2][1] === null ||
     values[3][1] === null
   ) {
-    await AsyncStorage.clear();
+    AsyncStorage.clear();
     return null;
   } else {
     let token = values[3][1] + values[0][1];
     let time = Math.floor(Date.now() / 1000);
     if (time > values[1][1]) {
-      fetch(BACKEND_API_URL + '/app-auth/access-token/get-new', {
+      return await fetch(BACKEND_API_URL + '/app-auth/access-token/get-new', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -118,7 +118,7 @@ const bootstrapAsync = async () => {
           return null;
         });
     } else if (time < values[1][1]) {
-      fetch(BACKEND_API_URL + '/app-auth/access-token/check-old', {
+      return await fetch(BACKEND_API_URL + '/app-auth/access-token/check-old', {
         headers: {
           Authorization: token,
         },
@@ -127,11 +127,7 @@ const bootstrapAsync = async () => {
           if (res.status !== 200) {
             return Promise.reject('Unauthorized');
           }
-          return res.json();
-        })
-        .then((json) => {
-          setTokenInfo(json);
-          token = json.token_type + json.access_token;
+          console.log(token);
           return token;
         })
         .catch((error) => {
@@ -160,28 +156,27 @@ const AppStateStore = createContextStore(
       state.isSignout = true;
       state.accessToken = null;
     }),
-    signIn: action((state, accessToken) => {
+    signIn: action((state, json) => {
+      setTokenInfo(json);
       state.isLoading = false;
       state.isSignout = false;
-      state.accessToken = accessToken;
+      state.accessToken = json.token_type + json.access_token;
     }),
     validateToken: thunk(async (actions) => {
-      await validateAccessToken().then((token) => {
-        if (token == null) {
-          actions.signOut();
-        } else {
-          actions.setAccessToken(token);
-        }
-      });
+      let token = await validateAccessToken();
+      if (typeof token === 'undefined') {
+        actions.signOut();
+      } else {
+        actions.setAccessToken(token);
+      }
     }),
     reOpenApp: thunk(async (actions) => {
-      await bootstrapAsync().then((token) => {
-        if (token == null) {
-          actions.signOut();
-        } else {
-          actions.setAccessToken(token);
-        }
-      });
+      let token = await bootstrapAsync();
+      if (typeof token === 'undefined') {
+        actions.signOut();
+      } else {
+        actions.setAccessToken(token);
+      }
     }),
   },
   storeConfig,

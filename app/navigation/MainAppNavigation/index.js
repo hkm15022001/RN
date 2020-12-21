@@ -13,6 +13,22 @@ import SignInScreen from '../../screens/SignInScreen';
 import messaging from '@react-native-firebase/messaging';
 
 function DetailsScreen() {
+  const validateToken = AppStateStore.useStoreActions(
+    (actions) => actions.validateToken,
+  );
+
+  React.useEffect(() => {
+    validateToken();
+    // messaging()
+    //   .getToken()
+    //   .then((token) => {
+    //     return saveTokenToDatabase(token);
+    //   });
+    // return messaging().onTokenRefresh((token) => {
+    //   saveTokenToDatabase(token);
+    // });
+  }, [validateToken]);
+
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Details!</Text>
