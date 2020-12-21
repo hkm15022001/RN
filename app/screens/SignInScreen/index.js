@@ -8,11 +8,14 @@ import {
   Alert,
 } from 'react-native';
 
+import AppStateStore from '../../store/state';
 import {BACKEND_API_URL} from '../../vars';
 
 export default function SignInScreen() {
   const [email, setEmail] = React.useState('admin@gmail.com');
   const [password, setPassword] = React.useState('12345678');
+
+  const signIn = AppStateStore.useStoreActions((actions) => actions.signIn);
 
   function handleLogin() {
     fetch(BACKEND_API_URL + '/app-auth/loginJSON', {
@@ -32,7 +35,7 @@ export default function SignInScreen() {
         }
         return res.json();
       })
-      .then((json) => console.log(json))
+      .then((json) => signIn(json.token_type + json.access_token))
       .catch((error) => Alert.alert(error));
   }
 

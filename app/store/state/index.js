@@ -58,6 +58,7 @@ const validateAccessToken = async () => {
         return token;
       })
       .catch((error) => {
+        AsyncStorage.clear();
         return null;
       });
   } else {
@@ -84,6 +85,7 @@ const bootstrapAsync = async () => {
     values[2][1] === null ||
     values[3][1] === null
   ) {
+    await AsyncStorage.clear();
     return null;
   } else {
     let token = values[3][1] + values[0][1];
@@ -112,6 +114,7 @@ const bootstrapAsync = async () => {
           return token;
         })
         .catch((error) => {
+          AsyncStorage.clear();
           return null;
         });
     } else if (time < values[1][1]) {
@@ -132,6 +135,7 @@ const bootstrapAsync = async () => {
           return token;
         })
         .catch((error) => {
+          AsyncStorage.clear();
           return null;
         });
     }
