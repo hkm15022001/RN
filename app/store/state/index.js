@@ -77,7 +77,6 @@ const bootstrapAsync = async () => {
     ]);
   } catch (e) {
     // read error
-    console.log(e);
   }
   if (
     values[0][1] === null ||
@@ -127,7 +126,6 @@ const bootstrapAsync = async () => {
           if (res.status !== 200) {
             return Promise.reject('Unauthorized');
           }
-          console.log(token);
           return token;
         })
         .catch((error) => {

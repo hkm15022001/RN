@@ -12,6 +12,7 @@ import SplashScreen from '../../screens/SplashScreen';
 import SignInScreen from '../../screens/SignInScreen';
 
 import messaging from '@react-native-firebase/messaging';
+import PushNotification from 'react-native-push-notification';
 
 function DetailsScreen() {
   const validateToken = AppStateStore.useStoreActions(
@@ -120,21 +121,19 @@ async function requestUserPermission() {
   }
 }
 
-const showAlert = (title, body) => {
-  Alert.alert(
-    title,
-    body,
-    [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-    {cancelable: false},
-  );
-};
-
 async function createNotificationListeners() {
   /*
    * Triggered for data only payload in foreground
    * */
   messaging().onMessage(async (remoteMessage) => {
-    Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    console.log(remoteMessage);
+    // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+
+    PushNotification.localNotification({
+      title: remoteMessage.notification.title,
+      message: remoteMessage.notification.body,
+      channelId: remoteMessage.data.channelId,
+    });
   });
 
   // Assume a message-notification contains a "type" property in the data payload of the screen to open
