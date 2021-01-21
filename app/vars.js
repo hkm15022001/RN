@@ -2,10 +2,10 @@
 
 let BACKEND_API_URL, PUBLIC_KEY;
 if (__DEV__ === true) {
-  BACKEND_API_URL = 'http://192.168.99.8:5000';
+  BACKEND_API_URL = 'http://192.168.99.8:5001';
   PUBLIC_KEY = '';
 } else {
-  BACKEND_API_URL = 'http://192.168.99.8:5000';
+  BACKEND_API_URL = 'http://192.168.99.8:5001';
   PUBLIC_KEY = '';
 }
 
