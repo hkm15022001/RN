@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, Text, Button, Alert} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppStateStore from '../../store/state';
 import {BACKEND_API_URL} from '../../vars';
 
@@ -8,82 +8,29 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
+import UserContext from '../../context/UserContext';
+import HomeStackScreen from '../HomeStackScreen';
+import ProfileStackScreen from '../ProfileStackScreen';
+import NotificationScreen from '../../screens/NotificationScreens/MainNotificatons';
+
 import SplashScreen from '../../screens/SplashScreen';
 import SignInScreen from '../../screens/SignInScreen';
 
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
 
-function DetailsScreen() {
-  const validateToken = AppStateStore.useStoreActions(
-    (actions) => actions.validateToken,
-  );
+////////////////////////////////////////////////// Template to verify //////////////////////////////////////////////////
 
-  React.useEffect(() => {
-    validateToken();
-  }, [validateToken]);
+//   const validateToken = AppStateStore.useStoreActions(
+//     (actions) => actions.validateToken,
+//   );
+//   React.useEffect(() => {
+//     validateToken();
+//   }, [validateToken]);
 
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Details!</Text>
-    </View>
-  );
-}
+////////////////////////////////////////////////// Template to verify //////////////////////////////////////////////////
 
-function HomeScreen({navigation}) {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Home screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
-      />
-    </View>
-  );
-}
-
-function SettingsScreen({navigation}) {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Settings screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
-      />
-    </View>
-  );
-}
-
-const SettingsStack = createStackNavigator();
-
-function SettingsStackScreen() {
-  return (
-    <SettingsStack.Navigator>
-      <SettingsStack.Screen name="Settings" component={SettingsScreen} />
-      <SettingsStack.Screen name="Details" component={DetailsScreen} />
-    </SettingsStack.Navigator>
-  );
-}
-
-const HomeStack = createStackNavigator();
-
-function HomeStackScreen() {
-  return (
-    <HomeStack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: '#f4511e',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}>
-      <HomeStack.Screen name="Home" component={HomeScreen} />
-      <HomeStack.Screen name="Details" component={DetailsScreen} />
-    </HomeStack.Navigator>
-  );
-}
+/////////////////////////////// Firebase cloud messaging config ///////////////////////////////
 
 async function saveTokenToDatabase(accessToken, appToken) {
   const requestOption = {
@@ -159,11 +106,22 @@ async function createNotificationListeners() {
     });
 }
 
+/////////////////////////////// Firebase cloud messaging config ///////////////////////////////
+
 // Define parameter for Navigation
 const Tab = createBottomTabNavigator();
 const AuthStack = createStackNavigator();
 
 export default function MainAppNavigation() {
+  const [valueforContext, setValueforContext] = React.useState({
+    name: 'Bui Gia Hoa',
+    address: '20 Le Truc Street, Ward 7, Binh Thanh District, Ho Chi Minh',
+    phoneNumber: '0902733275',
+    customerId: '123456789',
+    email: 'hoa199297@gmail.com',
+    gender: 'Male',
+    dayofBirth: '29/7/1998',
+  });
   const reOpenApp = AppStateStore.useStoreActions(
     (actions) => actions.reOpenApp,
   );
@@ -191,6 +149,22 @@ export default function MainAppNavigation() {
     return <SplashScreen />;
   }
 
+  const HomeStackUserContext = () => {
+    return (
+      <UserContext.Provider value={[valueforContext, setValueforContext]}>
+        <HomeStackScreen />
+      </UserContext.Provider>
+    );
+  };
+
+  const ProfileStackUserContext = () => {
+    return (
+      <UserContext.Provider value={[valueforContext, setValueforContext]}>
+        <ProfileStackScreen />
+      </UserContext.Provider>
+    );
+  };
+
   return (
     <NavigationContainer>
       {accessToken == null ? (
@@ -202,28 +176,66 @@ export default function MainAppNavigation() {
         </AuthStack.Navigator>
       ) : (
         <Tab.Navigator
-          screenOptions={({route}) => ({
-            tabBarIcon: ({focused, color, size}) => {
-              let iconName;
+          // screenOptions={({route}) => ({
+          //   tabBarIcon: ({focused, color, size}) => {
+          //     let iconName;
 
-              if (route.name === 'Home') {
-                iconName = focused
-                  ? 'information-circle'
-                  : 'information-circle-outline';
-              } else if (route.name === 'Settings') {
-                iconName = focused ? 'list-outline' : 'list-outline';
-              }
+          //     if (route.name === 'Home') {
+          //       iconName = focused
+          //         ? 'information-circle'
+          //         : 'information-circle-outline';
+          //     } else if (route.name === 'Settings') {
+          //       iconName = focused ? 'list-outline' : 'list-outline';
+          //     }
 
-              // You can return any component that you like here!
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-          })}
+          //     // You can return any component that you like here!
+          //     return <Ionicons name={iconName} size={size} color={color} />;
+          //   },
+          // })}
           tabBarOptions={{
             activeTintColor: 'blue',
             inactiveTintColor: 'gray',
           }}>
-          <Tab.Screen name="Home" component={HomeStackScreen} />
-          <Tab.Screen name="Settings" component={SettingsStackScreen} />
+          <Tab.Screen
+            name="Feed"
+            component={HomeStackUserContext}
+            options={{
+              tabBarLabel: 'Home',
+              tabBarColor: '#694fad',
+              tabBarIcon: ({color}) => (
+                <MaterialCommunityIcons name="home" color={color} size={26} />
+              ),
+            }}
+          />
+
+          <Tab.Screen
+            name="Notifications"
+            component={NotificationScreen}
+            options={{
+              tabBarLabel: 'Notifications',
+              tabBarColor: '#694fad',
+              tabBarIcon: ({color}) => (
+                <MaterialCommunityIcons name="bell" color={color} size={26} />
+              ),
+            }}
+          />
+
+          <Tab.Screen
+            name="Profiles"
+            component={ProfileStackUserContext}
+            options={{
+              tabBarLabel: 'Profiles',
+              tabBarColor: '#694fad',
+              // tabBarVisible: false, sử dụng biến truyền component con sang cha để gán giá trị
+              tabBarIcon: ({color}) => (
+                <MaterialCommunityIcons
+                  name="account"
+                  color={color}
+                  size={26}
+                />
+              ),
+            }}
+          />
         </Tab.Navigator>
       )}
     </NavigationContainer>
