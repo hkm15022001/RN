@@ -1,5 +1,5 @@
 import React from 'react';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppStateStore from '../../store/state';
 import {BACKEND_API_URL} from '../../vars';
@@ -10,6 +10,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import UserContext from '../../context/UserContext';
 import HomeStackScreen from '../HomeStackScreen';
+import OrderStackScreen from '../OrderStackScreen';
 import ProfileStackScreen from '../ProfileStackScreen';
 import NotificationScreen from '../../screens/NotificationScreens/MainNotificatons';
 
@@ -157,6 +158,14 @@ export default function MainAppNavigation() {
     );
   };
 
+  const OrderStackUserConstext = () => {
+    return (
+      <UserContext.Provider value={[valueforContext, setValueforContext]}>
+        <OrderStackScreen />
+      </UserContext.Provider>
+    );
+  };
+
   const ProfileStackUserContext = () => {
     return (
       <UserContext.Provider value={[valueforContext, setValueforContext]}>
@@ -193,17 +202,37 @@ export default function MainAppNavigation() {
           //   },
           // })}
           tabBarOptions={{
-            activeTintColor: 'blue',
+            showLabel: false,
+            activeTintColor: '#c98249',
             inactiveTintColor: 'gray',
+            tabStyle: {
+              paddingVertical: 5,
+            },
           }}>
           <Tab.Screen
-            name="Feed"
+            name="Home"
             component={HomeStackUserContext}
             options={{
               tabBarLabel: 'Home',
               tabBarColor: '#694fad',
               tabBarIcon: ({color}) => (
                 <MaterialCommunityIcons name="home" color={color} size={26} />
+              ),
+            }}
+          />
+
+          <Tab.Screen
+            name="Orders"
+            component={OrderStackUserConstext}
+            options={{
+              tabBarLabel: 'Orders',
+              tabBarColor: '#694fad',
+              tabBarIcon: ({color}) => (
+                <MaterialCommunityIcons
+                  name="package-variant-closed"
+                  color={color}
+                  size={26}
+                />
               ),
             }}
           />
@@ -228,11 +257,7 @@ export default function MainAppNavigation() {
               tabBarColor: '#694fad',
               // tabBarVisible: false, sử dụng biến truyền component con sang cha để gán giá trị
               tabBarIcon: ({color}) => (
-                <MaterialCommunityIcons
-                  name="account"
-                  color={color}
-                  size={26}
-                />
+                <EvilIcons name="navicon" color={color} size={26} />
               ),
             }}
           />
