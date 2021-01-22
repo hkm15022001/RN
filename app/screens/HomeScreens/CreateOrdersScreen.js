@@ -13,10 +13,9 @@ import {useTheme} from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
-//import BottomSheet from 'reanimated-bottom-sheet';
 // import Animated from 'react-native-reanimated';
 
-//import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import BottomSheet from 'react-native-js-bottom-sheet';
 import UserContext from '../../context/UserContext';
@@ -57,31 +56,32 @@ const CreateOrderScreen = ({navigation}) => {
   ]);
 
   const [valueforContext, setValueforContext] = useContext(UserContext);
+  const bs = React.createRef();
 
   const takePhotoFromCamera = () => {
-    // ImagePicker.openCamera({
-    //   compressImageMaxWidth: 300,
-    //   compressImageMaxHeight: 300,
-    //   cropping: true,
-    //   compressImageQuality: 0.7
-    // }).then(image => {
-    //   console.log(image);
-    //   setImage(image.path);
-    //   this.bs.current.snapTo(1);
-    // });
+    ImagePicker.openCamera({
+      compressImageMaxWidth: 300,
+      compressImageMaxHeight: 300,
+      cropping: true,
+      compressImageQuality: 0.7,
+    }).then((_image) => {
+      console.log(_image);
+      setImage(_image.path);
+      bs.current.snapTo(1);
+    });
   };
 
   const choosePhotoFromLibrary = () => {
-    // ImagePicker.openPicker({
-    //   width: 300,
-    //   height: 300,
-    //   cropping: true,
-    //   compressImageQuality: 0.7
-    // }).then(image => {
-    //   console.log(image);
-    //   setImage(image.path);
-    //   this.bs.current.snapTo(1);
-    // });
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+      compressImageQuality: 0.7,
+    }).then((_image) => {
+      console.log(_image);
+      setImage(_image.path);
+      bs.current.snapTo(1);
+    });
   };
 
   let bottomSheetNote;
@@ -112,29 +112,31 @@ const CreateOrderScreen = ({navigation}) => {
     bottomSheetServices.close();
   };
 
-  // renderInner = () => (
-  //   <View style={styles.panel}>
-  //     <View style={{alignItems: 'center'}}>
-  //       <Text style={styles.panelTitle}>Upload Photo</Text>
-  //       <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
-  //     </View>
-  //     <TouchableOpacity
-  //       style={styles.panelButton}
-  //       onPress={takePhotoFromCamera}>
-  //       <Text style={styles.panelButtonTitle}>Take Photo</Text>
-  //     </TouchableOpacity>
-  //     <TouchableOpacity
-  //       style={styles.panelButton}
-  //       onPress={choosePhotoFromLibrary}>
-  //       <Text style={styles.panelButtonTitle}>Choose From Library</Text>
-  //     </TouchableOpacity>
-  //     <TouchableOpacity
-  //       style={styles.panelButton}
-  //       onPress={() => this.bs.current.snapTo(1)}>
-  //       <Text style={styles.panelButtonTitle}>Cancel</Text>
-  //     </TouchableOpacity>
-  //   </View>
-  // );
+  const renderInner = () => {
+    return (
+      <View style={styles.panel}>
+        <View style={{alignItems: 'center'}}>
+          <Text style={styles.panelTitle}>Upload Photo</Text>
+          <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.panelButton}
+          onPress={takePhotoFromCamera}>
+          <Text style={styles.panelButtonTitle}>Take Photo</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.panelButton}
+          onPress={choosePhotoFromLibrary}>
+          <Text style={styles.panelButtonTitle}>Choose From Library</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.panelButton}
+          onPress={() => bs.current.snapTo(1)}>
+          <Text style={styles.panelButtonTitle}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   // renderHeader = () => (
   //   <View style={styles.header}>
@@ -143,8 +145,6 @@ const CreateOrderScreen = ({navigation}) => {
   //     </View>
   //   </View>
   // );
-
-  // bs = React.createRef();
 
   return (
     <ScrollView style={styles.container}>

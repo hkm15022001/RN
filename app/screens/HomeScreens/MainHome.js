@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: 'relative',
-    backgroundColor: '#ed8d40',
+    backgroundColor: '#d9862e',
     left: '-50%',
   },
 

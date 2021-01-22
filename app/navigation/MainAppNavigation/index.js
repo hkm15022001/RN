@@ -114,6 +114,23 @@ const Tab = createBottomTabNavigator();
 const AuthStack = createStackNavigator();
 
 export default function MainAppNavigation() {
+  // const serviceData = [
+  //   {
+  //     title: 'Express (+ 100.000 VND)',
+  //     icon: <MaterialCommunityIcons name="folder" color="grey" size={24} />,
+  //     onPress: () => _closeModalServices(),
+  //   },
+  //   {
+  //     title: 'Normal (+ 40.000 VND)',
+  //     icon: <MaterialCommunityIcons name="folder" color="grey" size={24} />,
+  //     onPress: () => _closeModalServices(),
+  //   },
+  //   {
+  //     title: 'Money-saving (+ 6.000 VND)',
+  //     icon: <MaterialCommunityIcons name="folder" color="grey" size={24} />,
+  //     onPress: () => _closeModalServices(),
+  //   },
+  // ];
   const [valueforContext, setValueforContext] = React.useState({
     name: 'Bui Gia Hoa',
     address: '20 Le Truc Street, Ward 7, Binh Thanh District, Ho Chi Minh',
@@ -150,30 +167,6 @@ export default function MainAppNavigation() {
     return <SplashScreen />;
   }
 
-  const HomeStackUserContext = () => {
-    return (
-      <UserContext.Provider value={[valueforContext, setValueforContext]}>
-        <HomeStackScreen />
-      </UserContext.Provider>
-    );
-  };
-
-  const OrderStackUserConstext = () => {
-    return (
-      <UserContext.Provider value={[valueforContext, setValueforContext]}>
-        <OrderStackScreen />
-      </UserContext.Provider>
-    );
-  };
-
-  const ProfileStackUserContext = () => {
-    return (
-      <UserContext.Provider value={[valueforContext, setValueforContext]}>
-        <ProfileStackScreen />
-      </UserContext.Provider>
-    );
-  };
-
   return (
     <NavigationContainer>
       {accessToken == null ? (
@@ -184,84 +177,70 @@ export default function MainAppNavigation() {
           <AuthStack.Screen name="SignIn" component={SignInScreen} />
         </AuthStack.Navigator>
       ) : (
-        <Tab.Navigator
-          // screenOptions={({route}) => ({
-          //   tabBarIcon: ({focused, color, size}) => {
-          //     let iconName;
+        <UserContext.Provider value={[valueforContext, setValueforContext]}>
+          <Tab.Navigator
+            tabBarOptions={{
+              showLabel: false,
+              activeTintColor: '#c98249',
+              inactiveTintColor: 'gray',
+              tabStyle: {
+                paddingVertical: 5,
+              },
+            }}>
+            <Tab.Screen
+              name="Home"
+              component={HomeStackScreen}
+              options={{
+                tabBarLabel: 'Home',
+                tabBarColor: '#694fad',
+                tabBarIcon: ({color}) => (
+                  <MaterialCommunityIcons name="home" color={color} size={26} />
+                ),
+              }}
+            />
 
-          //     if (route.name === 'Home') {
-          //       iconName = focused
-          //         ? 'information-circle'
-          //         : 'information-circle-outline';
-          //     } else if (route.name === 'Settings') {
-          //       iconName = focused ? 'list-outline' : 'list-outline';
-          //     }
+            <Tab.Screen
+              name="Orders"
+              component={OrderStackScreen}
+              options={{
+                tabBarLabel: 'Orders',
+                tabBarColor: '#694fad',
+                tabBarIcon: ({color}) => (
+                  <MaterialCommunityIcons
+                    name="package-variant-closed"
+                    color={color}
+                    size={26}
+                  />
+                ),
+              }}
+            />
 
-          //     // You can return any component that you like here!
-          //     return <Ionicons name={iconName} size={size} color={color} />;
-          //   },
-          // })}
-          tabBarOptions={{
-            showLabel: false,
-            activeTintColor: '#c98249',
-            inactiveTintColor: 'gray',
-            tabStyle: {
-              paddingVertical: 5,
-            },
-          }}>
-          <Tab.Screen
-            name="Home"
-            component={HomeStackUserContext}
-            options={{
-              tabBarLabel: 'Home',
-              tabBarColor: '#694fad',
-              tabBarIcon: ({color}) => (
-                <MaterialCommunityIcons name="home" color={color} size={26} />
-              ),
-            }}
-          />
+            <Tab.Screen
+              name="Notifications"
+              component={NotificationScreen}
+              options={{
+                tabBarLabel: 'Notifications',
+                tabBarColor: '#694fad',
+                tabBarIcon: ({color}) => (
+                  <MaterialCommunityIcons name="bell" color={color} size={26} />
+                ),
+              }}
+            />
 
-          <Tab.Screen
-            name="Orders"
-            component={OrderStackUserConstext}
-            options={{
-              tabBarLabel: 'Orders',
-              tabBarColor: '#694fad',
-              tabBarIcon: ({color}) => (
-                <MaterialCommunityIcons
-                  name="package-variant-closed"
-                  color={color}
-                  size={26}
-                />
-              ),
-            }}
-          />
-
-          <Tab.Screen
-            name="Notifications"
-            component={NotificationScreen}
-            options={{
-              tabBarLabel: 'Notifications',
-              tabBarColor: '#694fad',
-              tabBarIcon: ({color}) => (
-                <MaterialCommunityIcons name="bell" color={color} size={26} />
-              ),
-            }}
-          />
-
-          <Tab.Screen
-            name="Profiles"
-            component={ProfileStackUserContext}
-            options={{
-              tabBarLabel: 'Profiles',
-              tabBarColor: '#694fad',
-              // tabBarVisible: false, sử dụng biến truyền component con sang cha để gán giá trị
-              tabBarIcon: ({color}) => (
-                <EvilIcons name="navicon" color={color} size={26} />
-              ),
-            }}
-          />
-        </Tab.Navigator>
+            <Tab.Screen
+              name="Profiles"
+              component={ProfileStackScreen}
+              options={{
+                tabBarLabel: 'Profiles',
+                tabBarColor: '#694fad',
+                // tabBarVisible: false, sử dụng biến truyền component con sang cha để gán giá trị
+                tabBarIcon: ({color}) => (
+                  <EvilIcons name="navicon" color={color} size={26} />
+                ),
+              }}
+            />
+          </Tab.Navigator>
+        </UserContext.Provider>
       )}
     </NavigationContainer>
   );

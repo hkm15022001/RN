@@ -134,8 +134,10 @@ android {
         applicationId "com.movenicevn.reactnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        vectorDrawables.useSupportLibrary = true
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     splits {
         abi {
@@ -183,6 +185,8 @@ android {
 }
 
 dependencies {
+    // Source: https://stackoverflow.com/a/63600665
+    implementation 'com.android.support:multidex:1.0.3'
     implementation fileTree(dir: "libs", include: ["*.jar"])
 	implementation platform('com.google.firebase:firebase-bom:26.1.1')
     implementation project(':react-native-push-notification')

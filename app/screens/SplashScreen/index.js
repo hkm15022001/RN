@@ -1,14 +1,12 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-class SplashScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.viewStyles}>
-        <Text style={styles.textStyles}>Move Nice!</Text>
-      </View>
-    );
-  }
+export default function SplashScreen() {
+  return (
+    <View style={styles.viewStyles}>
+      <Text style={styles.textStyles}>Move Nice!</Text>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -24,5 +22,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-export default SplashScreen;
