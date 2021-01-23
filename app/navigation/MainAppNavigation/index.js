@@ -37,7 +37,6 @@ async function saveTokenToDatabase(accessToken, appToken) {
   const requestOption = {
     method: 'POST',
     headers: {
-      Accept: 'application/json',
       Authorization: accessToken,
       'Content-Type': 'application/json',
     },
@@ -137,24 +136,26 @@ export default function MainAppNavigation() {
     reOpenApp();
     requestUserPermission();
     createNotificationListeners();
-    messaging()
-      .getToken()
-      .then((appToken) => {
-        return saveTokenToDatabase(accessToken, appToken);
-      });
-    setValueforContext(userContextInStore);
-    return () => {
-      messaging().onTokenRefresh((appToken) => {
-        saveTokenToDatabase(accessToken, appToken);
-      });
-      createNotificationListeners();
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
     setValueforContext(userContextInStore);
   }, [userContextInStore]);
+
+  React.useEffect(() => {
+    messaging()
+      .getToken()
+      .then((appToken) => {
+        return saveTokenToDatabase(accessToken, appToken);
+      });
+    return () => {
+      messaging().onTokenRefresh((appToken) => {
+        saveTokenToDatabase(accessToken, appToken);
+      });
+      createNotificationListeners();
+    };
+  }, [accessToken]);
 
   if (isLoading) {
     return <SplashScreen />;

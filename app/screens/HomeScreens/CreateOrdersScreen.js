@@ -23,7 +23,8 @@ import AppStateStore from '../../store/state';
 
 import {BACKEND_API_URL} from '../../vars';
 
-const CreateOrderScreen = ({navigation}) => {
+const CreateOrderScreen = ({route, navigation}) => {
+  const {orderVoucherID} = route.params;
   const [userContextValue, setContextValue] = useContext(UserContext);
   const validateToken = AppStateStore.useStoreActions(
     (actions) => actions.validateToken,
@@ -42,6 +43,7 @@ const CreateOrderScreen = ({navigation}) => {
     note: '',
     short_ship_distance: 20,
     image: '',
+    order_voucher_id: orderVoucherID,
   });
 
   const [senderName, setSenderName] = useState(userContextValue.name);
@@ -145,7 +147,10 @@ const CreateOrderScreen = ({navigation}) => {
             method: 'POST',
             body: JSON.stringify(state),
           };
-          return fetch(BACKEND_API_URL + '/api/order/create', requestOptions);
+          return fetch(
+            BACKEND_API_URL + '/api/order/create-use-voucher',
+            requestOptions,
+          );
         })
         .then((res) => {
           if (res.status !== 201) {
