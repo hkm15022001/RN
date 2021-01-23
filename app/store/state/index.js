@@ -266,7 +266,7 @@ const AppStateStore = createContextStore(
       setTokenInfo(json.tokens);
       state.isLoading = false;
       state.isSignout = false;
-      state.accessToken = json.token_type + json.access_token;
+      state.accessToken = json.tokens.token_type + json.tokens.access_token;
     }),
     validateToken: thunk(async (actions) => {
       let token = await validateAccessToken();
@@ -278,7 +278,7 @@ const AppStateStore = createContextStore(
     }),
     reOpenApp: thunk(async (actions) => {
       let token = await bootstrapAsync();
-      if (typeof token === 'undefined') {
+      if (token === null) {
         actions.signOut();
       } else {
         let userSpecificID = await bootstrapUserRole();

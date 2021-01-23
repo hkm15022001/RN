@@ -142,7 +142,6 @@ export default function MainAppNavigation() {
       .then((appToken) => {
         return saveTokenToDatabase(accessToken, appToken);
       });
-    console.log(userContextInStore);
     setValueforContext(userContextInStore);
     return () => {
       messaging().onTokenRefresh((appToken) => {
@@ -155,7 +154,6 @@ export default function MainAppNavigation() {
 
   React.useEffect(() => {
     setValueforContext(userContextInStore);
-    console.log(userContextInStore);
   }, [userContextInStore]);
 
   if (isLoading) {
