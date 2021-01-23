@@ -15,11 +15,7 @@ export default function HomeStackScreen() {
         name="Home"
         component={HomeScreen}
       />
-      <HomeStack.Screen
-        options={{headerShown: false}}
-        name="Create order"
-        component={CreateOrderScreen}
-      />
+      <HomeStack.Screen name="Create order" component={CreateOrderScreen} />
       <HomeStack.Screen
         name="Update Location Delivery"
         component={UpdateLocationDelivery}

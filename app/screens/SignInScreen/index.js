@@ -12,13 +12,15 @@ import AppStateStore from '../../store/state';
 import {BACKEND_API_URL} from '../../vars';
 
 export default function SignInScreen() {
-  const [email, setEmail] = React.useState('admin@gmail.com');
+  const [email, setEmail] = React.useState('customer@gmail.com');
   const [password, setPassword] = React.useState('12345678');
 
   const signIn = AppStateStore.useStoreActions((actions) => actions.signIn);
+  const setUserContext = AppStateStore.useStoreActions(
+    (actions) => actions.setUserContext,
+  );
 
   function handleLogin() {
-    console.log('Login:', email);
     fetch(BACKEND_API_URL + '/app-auth/loginJSON', {
       method: 'POST',
       headers: {
@@ -36,7 +38,10 @@ export default function SignInScreen() {
         }
         return res.json();
       })
-      .then((json) => signIn(json))
+      .then((json) => {
+        signIn(json);
+        setUserContext(json.front_end_context);
+      })
       .catch((error) => {
         Alert.alert(JSON.stringify(error));
       });

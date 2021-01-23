@@ -92,7 +92,7 @@ const EditProfileScreen = () => {
   const [userInfo, setUserInfo] = useState({
     orderId: '',
     name: '',
-    phoneNumber: '',
+    phone: '',
     email: '',
     gender: '',
     dayofBirth: '',
@@ -202,9 +202,9 @@ const EditProfileScreen = () => {
                 color: colors.text,
               },
             ]}
-            defaultValue={valueforContext.phoneNumber}
+            defaultValue={valueforContext.phone}
             onChangeText={(text) => {
-              setUserInfo({phoneNumber: text});
+              setUserInfo({phone: text});
             }}
           />
         </View>

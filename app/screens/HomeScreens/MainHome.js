@@ -2,17 +2,25 @@ import React, {useState} from 'react';
 import {Avatar, Chip, Card, Button, Paragraph, FAB} from 'react-native-paper';
 import {StyleSheet, View, Text, FlatList, Animated} from 'react-native';
 
+import AppStateStore from '../../store/state';
+
 const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
 
 const HomeScreen = ({navigation}) => {
+  const validateToken = AppStateStore.useStoreActions(
+    (actions) => actions.validateToken,
+  );
+  React.useEffect(() => {
+    validateToken();
+  }, [validateToken]);
   // Source: https://github.com/mukeshphulwani66/Youtube-clone-React-Native/blob/master/src/screens/Home.js
   // Youtube: https://www.youtube.com/watch?v=mvxgWuxwnik
   // Hide header when scroll up
   const scrollY = new Animated.Value(0);
-  const diffClamp = Animated.diffClamp(scrollY, 1, 96); // 96 is the height of header
+  const diffClamp = Animated.diffClamp(scrollY, 0, 101); // 96 is the height of header
   const translateY = diffClamp.interpolate({
-    inputRange: [1, 96],
-    outputRange: [1, -96],
+    inputRange: [0, 101],
+    outputRange: [0, -101],
   });
 
   const [dataHome, setDataHome] = useState([
@@ -141,6 +149,11 @@ const HomeScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#DCDCDC',
+  },
+
   fabContainer: {
     position: 'absolute',
     left: '50%',
@@ -153,15 +166,9 @@ const styles = StyleSheet.create({
     left: '-50%',
   },
 
-  container: {
-    flex: 1,
-    backgroundColor: '#DCDCDC',
-    //alignItems:'center',
-  },
-
   headerContainer: {
-    height: 96,
-    backgroundColor: '#000',
+    height: 101,
+    backgroundColor: '#fff',
     position: 'absolute',
     top: 0,
     left: 0,
@@ -181,7 +188,7 @@ const styles = StyleSheet.create({
   },
 
   flatListContainer: {
-    paddingTop: 106, //96+5
+    paddingTop: 110, //96+5
     paddingBottom: 55,
   },
 

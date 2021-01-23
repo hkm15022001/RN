@@ -48,7 +48,7 @@ const MainProfilesScreen = ({navigation}) => {
         <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20} />
           <Text style={{color: '#777777', marginLeft: 20, marginRight: 10}}>
-            {valueforContext.phoneNumber}
+            {valueforContext.phone}
           </Text>
           <Icon
             name="lead-pencil"
