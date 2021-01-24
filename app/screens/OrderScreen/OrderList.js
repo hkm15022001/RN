@@ -77,7 +77,7 @@ const YourOrderScreen = ({navigation}) => {
       renderItem={({item}) => (
         <TouchableOpacity
           style={styles.container}
-          onPress={() => navigation.navigate('Your Order Detail Screen')}>
+          onPress={() => navigation.navigate('Order detail')}>
           <View
             style={{
               borderBottomWidth: 0.5,

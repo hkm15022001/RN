@@ -34,27 +34,31 @@ import PushNotification from 'react-native-push-notification';
 /////////////////////////////// Firebase cloud messaging config ///////////////////////////////
 
 async function saveTokenToDatabase(accessToken, appToken) {
-  const requestOption = {
-    method: 'POST',
-    headers: {
-      Authorization: accessToken,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      token: appToken,
-    }),
-  };
+  if (accessToken == null) {
+    return Promise.resolve(null);
+  } else {
+    const requestOption = {
+      method: 'POST',
+      headers: {
+        Authorization: accessToken,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token: appToken,
+      }),
+    };
 
-  return await fetch(BACKEND_API_URL + '/fcm-auth/save-token', requestOption)
-    .then((res) => {
-      if (res.status !== 200) {
-        return Promise.reject('Unauthorized');
-      }
-      return res;
-    })
-    .catch((error) => {
-      return null;
-    });
+    return await fetch(BACKEND_API_URL + '/fcm-auth/save-token', requestOption)
+      .then((res) => {
+        if (res.status !== 200) {
+          return Promise.reject('Unauthorized');
+        }
+        return res;
+      })
+      .catch((error) => {
+        return null;
+      });
+  }
 }
 
 async function requestUserPermission() {

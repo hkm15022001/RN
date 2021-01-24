@@ -25,7 +25,7 @@ import {BACKEND_API_URL} from '../../vars';
 
 const CreateOrderScreen = ({route, navigation}) => {
   const {orderVoucherID} = route.params;
-  const [userContextValue, setContextValue] = useContext(UserContext);
+  const [userContextValue] = useContext(UserContext);
   const validateToken = AppStateStore.useStoreActions(
     (actions) => actions.validateToken,
   );
@@ -577,7 +577,7 @@ export default CreateOrderScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#DCDCDC',
+    backgroundColor: '#e8e8e8',
   },
 
   headerAlignCenter: {

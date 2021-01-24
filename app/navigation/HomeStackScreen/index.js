@@ -1,8 +1,7 @@
 import React from 'react';
 
 import HomeScreen from '../../screens/HomeScreens/MainHome';
-import CreateOrderScreen from '../../screens/HomeScreens/CreateOrdersScreen';
-import UpdateLocationDelivery from '../../screens/HomeScreens/UpdateLocationDelivery';
+import CreateOrderScreen from '../../screens/HomeScreens/CreateOrder';
 
 import {createStackNavigator} from '@react-navigation/stack';
 const HomeStack = createStackNavigator();
@@ -16,10 +15,6 @@ export default function HomeStackScreen() {
         component={HomeScreen}
       />
       <HomeStack.Screen name="Create order" component={CreateOrderScreen} />
-      <HomeStack.Screen
-        name="Update Location Delivery"
-        component={UpdateLocationDelivery}
-      />
     </HomeStack.Navigator>
   );
 }
