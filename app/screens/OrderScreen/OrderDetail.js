@@ -4,16 +4,15 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Image,
   TouchableOpacity,
 } from 'react-native';
 
 import AppStateStore from '../../store/state';
-import {BACKEND_API_URL, BACKEND_API_IMAGE_URL} from '../../vars';
+import {BACKEND_API_URL} from '../../vars';
 
 const OrderDetail = ({route, navigation}) => {
   // const {orderID} = route.params;
-  const orderID = 1968615;
+  const orderID = 4947365;
   const validateToken = AppStateStore.useStoreActions(
     (actions) => actions.validateToken,
   );
@@ -85,6 +84,24 @@ const OrderDetail = ({route, navigation}) => {
               <Text style={styles.headerText}>Delivery information</Text>
             </View>
             <View style={styles.customerLabelContainer}>
+              <Text style={styles.customerLabel}>Order info:</Text>
+            </View>
+            <View style={styles.customerDetailContainer}>
+              <Text style={styles.customerDetail}>
+                Order ID: {orderInfo.id}
+              </Text>
+            </View>
+            <View style={styles.customerDetailContainer}>
+              <Text style={styles.customerDetail}>
+                Order short ship ID: {orderInfo.order_short_ship_id || 0}
+              </Text>
+            </View>
+            <View style={styles.customerDetailContainer}>
+              <Text style={styles.customerDetail}>
+                Long ship ID: {orderInfo.long_ship_id || 0}
+              </Text>
+            </View>
+            <View style={styles.customerLabelContainer}>
               <Text style={styles.customerLabel}>Package info:</Text>
             </View>
             <View style={styles.customerDetailContainer}>
@@ -92,17 +109,9 @@ const OrderDetail = ({route, navigation}) => {
                 Detail: {orderInfo.detail}
               </Text>
             </View>
-            <View style={styles.customerLabelContainer}>
-              <Text style={styles.customerLabel}>Image</Text>
+            <View style={styles.customerDetailContainer}>
+              <Text style={styles.customerDetail}>Note: {orderInfo.note}</Text>
             </View>
-            {orderInfo.image !== '' ? (
-              <Image
-                style={styles.imageStyle}
-                source={{uri: BACKEND_API_IMAGE_URL + orderInfo.image}}
-              />
-            ) : (
-              <></>
-            )}
             <View style={styles.customerLabelContainer}>
               <Text style={styles.customerLabel}>Transport information</Text>
             </View>
@@ -232,7 +241,7 @@ const styles = StyleSheet.create({
 
   customerDetailContainer: {
     paddingHorizontal: 15,
-    paddingVertical: 5,
+    paddingVertical: 2,
   },
 
   customerDetail: {

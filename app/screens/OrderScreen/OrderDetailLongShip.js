@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, SafeAreaView, Text} from 'react-native';
+import {StyleSheet, SafeAreaView} from 'react-native';
 import Timeline from 'react-native-timeline-flatlist';
 import {format} from 'date-fns';
 
@@ -34,14 +34,14 @@ const OrderDetailLongShip = ({route, navigation}) => {
     };
     stateObject1.time = format(
       new Date(longShipInfo.estimated_time_of_departure * 1000),
-      'dd/MM',
+      'HH:mm',
     );
     stateObject1.title = 'Departure time';
     stateObject1.description =
-      'Occurred at: ' +
+      'On date: ' +
       format(
         new Date(longShipInfo.estimated_time_of_departure * 1000),
-        'HH:mm',
+        'dd/MM',
       );
     longShipParsedArray.push(stateObject1);
     if (longShipInfo.package_loaded === true) {
@@ -52,14 +52,14 @@ const OrderDetailLongShip = ({route, navigation}) => {
       };
       stateObject2.time = format(
         new Date(longShipInfo.loaded_time * 1000),
-        'dd/MM',
+        'HH:mm',
       );
       stateObject2.title = 'Package Loaded';
       stateObject2.description =
         'Employee Load ID: ' +
         longShipInfo.empl_load_id.toString() +
-        ' - Occurred at: ' +
-        format(new Date(longShipInfo.loaded_time * 1000), 'HH:mm');
+        ' - On date: ' +
+        format(new Date(longShipInfo.loaded_time * 1000), 'dd/MM');
       longShipParsedArray.push(stateObject2);
       if (longShipInfo.vehicle_started === true) {
         let stateObject3 = {
@@ -69,14 +69,14 @@ const OrderDetailLongShip = ({route, navigation}) => {
         };
         stateObject3.time = format(
           new Date(longShipInfo.started_time * 1000),
-          'dd/MM',
+          'HH:mm',
         );
         stateObject3.title = 'Vehicle Started';
         stateObject3.description =
           'Employee Driver 1 ID: ' +
           longShipInfo.empl_driver_1_id.toString() +
-          ' - Occurred at: ' +
-          format(new Date(longShipInfo.started_time * 1000), 'HH:mm');
+          ' - On date: ' +
+          format(new Date(longShipInfo.started_time * 1000), 'dd/MM');
         longShipParsedArray.push(stateObject3);
         if (longShipInfo.vehicle_arrived === true) {
           let stateObject4 = {
@@ -86,14 +86,14 @@ const OrderDetailLongShip = ({route, navigation}) => {
           };
           stateObject4.time = format(
             new Date(longShipInfo.arrived_time * 1000),
-            'dd/MM',
+            'HH:mm',
           );
           stateObject4.title = 'Vehicle Arrived';
           stateObject4.description =
             'Employee Driver 2 ID: ' +
             longShipInfo.empl_driver_2_id.toString() +
-            ' - Occurred at: ' +
-            format(new Date(longShipInfo.arrived_time * 1000), 'HH:mm');
+            ' - On date: ' +
+            format(new Date(longShipInfo.arrived_time * 1000), 'dd/MM');
           longShipParsedArray.push(stateObject4);
           if (longShipInfo.package_unloaded === true) {
             let stateObject5 = {
@@ -103,14 +103,14 @@ const OrderDetailLongShip = ({route, navigation}) => {
             };
             stateObject5.time = format(
               new Date(longShipInfo.unloaded_time * 1000),
-              'dd/MM',
+              'HH:mm',
             );
             stateObject5.title = 'Package Unloaded';
             stateObject5.description =
               'Employee Unload ID' +
               longShipInfo.empl_unload_id.toString() +
-              ' - Occurred at: ' +
-              format(new Date(longShipInfo.unloaded_time * 1000), 'HH:mm');
+              ' - On date: ' +
+              format(new Date(longShipInfo.unloaded_time * 1000), 'dd/MM');
             longShipParsedArray.push(stateObject5);
             let stateObject6 = {
               time: '',
@@ -119,7 +119,7 @@ const OrderDetailLongShip = ({route, navigation}) => {
             };
             stateObject6.time = format(
               new Date(longShipInfo.unloaded_time * 1000),
-              'dd/MM',
+              'HH:mm',
             );
             stateObject6.title = 'Finished';
             stateObject6.description = '';
@@ -163,9 +163,6 @@ const OrderDetailLongShip = ({route, navigation}) => {
         <></>
       ) : (
         <>
-          <View style={styles.headerAlignCenter}>
-            <Text style={styles.headerText}>Long ship status</Text>
-          </View>
           <Timeline
             style={styles.list}
             data={data}

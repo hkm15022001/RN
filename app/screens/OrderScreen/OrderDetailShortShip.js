@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, SafeAreaView, Text} from 'react-native';
+import {StyleSheet, SafeAreaView} from 'react-native';
 import Timeline from 'react-native-timeline-flatlist';
 import {format} from 'date-fns';
 
@@ -59,14 +59,14 @@ const OrderDetailShortShip = ({route, navigation}) => {
         };
         stateObject3.time = format(
           new Date(orderShortShipInfo.received_money_time * 1000),
-          'dd/MM',
+          'HH:mm',
         );
         stateObject3.title = 'Shipper received money';
         stateObject3.description =
-          'Occurred at: ' +
+          'On date: ' +
           format(
             new Date(orderShortShipInfo.received_money_time * 1000),
-            'HH:mm',
+            'dd/MM',
           );
         orderShortShipParsedArray.push(stateObject3);
       }
@@ -80,12 +80,12 @@ const OrderDetailShortShip = ({route, navigation}) => {
       };
       stateObject4.time = format(
         new Date(orderShortShipInfo.shipped_time * 1000),
-        'dd/MM',
+        'HH:mm',
       );
       stateObject4.title = 'Shipper Shipped';
       stateObject4.description =
-        'Occurred at: ' +
-        format(new Date(orderShortShipInfo.shipped_time * 1000), 'HH:mm');
+        'On date: ' +
+        format(new Date(orderShortShipInfo.shipped_time * 1000), 'dd/MM');
       orderShortShipParsedArray.push(stateObject4);
       if (orderShortShipInfo.shipper_confirmed !== '') {
         let stateObject5 = {
@@ -95,14 +95,14 @@ const OrderDetailShortShip = ({route, navigation}) => {
         };
         stateObject5.time = format(
           new Date(orderShortShipInfo.shipper_confirmed_time * 1000),
-          'dd/MM',
+          'HH:mm',
         );
         stateObject5.title = 'Shipper Confirmed';
         stateObject5.description =
-          'Occurred at: ' +
+          'On date: ' +
           format(
             new Date(orderShortShipInfo.shipper_confirmed_time * 1000),
-            'HH:mm',
+            'dd/MM',
           );
         orderShortShipParsedArray.push(stateObject5);
         let stateObject6 = {
@@ -112,7 +112,7 @@ const OrderDetailShortShip = ({route, navigation}) => {
         };
         stateObject6.time = format(
           new Date(orderShortShipInfo.shipper_confirmed_time * 1000),
-          'dd/MM',
+          'HH:mm',
         );
         stateObject6.title = 'Finished';
         stateObject6.description = '';
@@ -154,9 +154,6 @@ const OrderDetailShortShip = ({route, navigation}) => {
         <></>
       ) : (
         <>
-          <View style={styles.headerAlignCenter}>
-            <Text style={styles.headerText}>Order short ship status</Text>
-          </View>
           <Timeline
             style={styles.list}
             data={data}
@@ -183,7 +180,7 @@ export default OrderDetailShortShip;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 15,
     flex: 1,
     backgroundColor: 'white',
   },
