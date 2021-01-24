@@ -6,7 +6,7 @@ import {format} from 'date-fns';
 import AppStateStore from '../../store/state';
 import {BACKEND_API_URL} from '../../vars';
 
-const OrderDetailDeliveryLongShip = ({route, navigation}) => {
+const OrderDetailLongShip = ({route, navigation}) => {
   const {longShipID} = route.params;
   const validateToken = AppStateStore.useStoreActions(
     (actions) => actions.validateToken,
@@ -25,12 +25,6 @@ const OrderDetailDeliveryLongShip = ({route, navigation}) => {
     fetchOrderLongShipData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const stateObject = {
-    time: '',
-    title: '',
-    description: '',
-  };
 
   const prepareArrayData = (longShipInfo) => {
     let stateObject1 = {
@@ -194,7 +188,7 @@ const OrderDetailDeliveryLongShip = ({route, navigation}) => {
   );
 };
 
-export default OrderDetailDeliveryLongShip;
+export default OrderDetailLongShip;
 
 const styles = StyleSheet.create({
   container: {

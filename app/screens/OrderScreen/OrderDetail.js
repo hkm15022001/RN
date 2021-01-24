@@ -13,7 +13,7 @@ import {BACKEND_API_URL, BACKEND_API_IMAGE_URL} from '../../vars';
 
 const OrderDetail = ({route, navigation}) => {
   // const {orderID} = route.params;
-  const orderID = 3608692;
+  const orderID = 1968615;
   const validateToken = AppStateStore.useStoreActions(
     (actions) => actions.validateToken,
   );
@@ -118,7 +118,7 @@ const OrderDetail = ({route, navigation}) => {
             </View>
           </View>
 
-          <View style={styles.childContainer2}>
+          <View style={styles.childContainer}>
             <View style={styles.headerAlignCenter}>
               <Text style={styles.headerText}>Delivery status</Text>
             </View>
@@ -151,8 +151,8 @@ const OrderDetail = ({route, navigation}) => {
                   <TouchableOpacity
                     style={styles.panelButton}
                     onPress={() =>
-                      navigation.navigate('Order detail delivery status', {
-                        orderID: orderID,
+                      navigation.navigate('Order detail short ship', {
+                        orderShortShipID: orderInfo.order_short_ship_id,
                       })
                     }>
                     <Text style={styles.panelButtonTitle}>View detail</Text>
@@ -162,6 +162,13 @@ const OrderDetail = ({route, navigation}) => {
             ) : (
               <></>
             )}
+          </View>
+          <View style={styles.createButtonContainer}>
+            <TouchableOpacity
+              style={styles.commandButton}
+              onPress={() => fetchOrderData()}>
+              <Text style={styles.panelButtonTitle}>Refresh detail</Text>
+            </TouchableOpacity>
           </View>
         </>
       )}
