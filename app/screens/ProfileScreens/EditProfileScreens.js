@@ -53,46 +53,46 @@ const EditProfileScreen = () => {
     // });
   };
 
-  // renderInner = () => (
-  //   <View style={styles.panel}>
-  //     <View style={{alignItems: 'center'}}>
-  //       <Text style={styles.panelTitle}>Upload Photo</Text>
-  //       <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
-  //     </View>
-  //     <TouchableOpacity
-  //       style={styles.panelButton}
-  //       onPress={takePhotoFromCamera}>
-  //       <Text style={styles.panelButtonTitle}>Take Photo</Text>
-  //     </TouchableOpacity>
-  //     <TouchableOpacity
-  //       style={styles.panelButton}
-  //       onPress={choosePhotoFromLibrary}>
-  //       <Text style={styles.panelButtonTitle}>Choose From Library</Text>
-  //     </TouchableOpacity>
-  //     <TouchableOpacity
-  //       style={styles.panelButton}
-  //       onPress={() => this.bs.current.snapTo(1)}>
-  //       <Text style={styles.panelButtonTitle}>Cancel</Text>
-  //     </TouchableOpacity>
-  //   </View>
-  // );
+  renderInner = () => (
+    <View style={styles.panel}>
+      <View style={{alignItems: 'center'}}>
+        <Text style={styles.panelTitle}>Upload Photo</Text>
+        <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
+      </View>
+      <TouchableOpacity
+        style={styles.panelButton}
+        onPress={takePhotoFromCamera}>
+        <Text style={styles.panelButtonTitle}>Take Photo</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.panelButton}
+        onPress={choosePhotoFromLibrary}>
+        <Text style={styles.panelButtonTitle}>Choose From Library</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.panelButton}
+        onPress={() => this.bs.current.snapTo(1)}>
+        <Text style={styles.panelButtonTitle}>Cancel</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
-  // renderHeader = () => (
-  //   <View style={styles.header}>
-  //     <View style={styles.panelHeader}>
-  //       <View style={styles.panelHandle} />
-  //     </View>
-  //   </View>
-  // );
+  renderHeader = () => (
+    <View style={styles.header}>
+      <View style={styles.panelHeader}>
+        <View style={styles.panelHandle} />
+      </View>
+    </View>
+  );
 
-  // bs = React.createRef();
+  bs = React.createRef();
   // fall = new Animated.Value(1);
 
   const [valueforContext, setValueforContext] = useContext(UserContext);
   const [userInfo, setUserInfo] = useState({
     orderId: '',
     name: '',
-    phone: '',
+    phoneNumber: '',
     email: '',
     gender: '',
     dayofBirth: '',
@@ -113,7 +113,7 @@ const EditProfileScreen = () => {
         opacity: Animated.add(0.1, Animated.multiply(this.fall, 1.0)),
       }}> */}
       <View>
-        <View style={{alignItems: 'center'}}>
+        {/* <View style={{alignItems: 'center'}}>
           <TouchableOpacity onPress={() => this.bs.current.snapTo(0)}>
             <View
               style={{
@@ -152,23 +152,12 @@ const EditProfileScreen = () => {
               </ImageBackground>
             </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
-        <View style={styles.action}>
-          <FontAwesome name="user-o" color={colors.text} size={20} />
-          <TextInput
-            placeholder="Your Id number"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-            editable={false}
-            defaultValue={valueforContext.customerId}
-          />
+        <View style={styles.IconContainer}>
+          <View style={styles.IconWrap}>
+            <Icon name="account" size={60} color="#FFFFFF" />
+          </View>
         </View>
 
         <View style={styles.action}>
@@ -202,9 +191,9 @@ const EditProfileScreen = () => {
                 color: colors.text,
               },
             ]}
-            defaultValue={valueforContext.phone}
+            defaultValue={valueforContext.phoneNumber}
             onChangeText={(text) => {
-              setUserInfo({phone: text});
+              setUserInfo({phoneNumber: text});
             }}
           />
         </View>
@@ -276,40 +265,40 @@ export default EditProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFFFFF',
+    paddingRight: 10,
+    paddingLeft: 10,
   },
+
   commandButton: {
     padding: 15,
     borderRadius: 10,
-    // backgroundColor: '#FF6347',
     backgroundColor: '#1BA9FF',
     alignItems: 'center',
     marginTop: 10,
   },
+
   panel: {
     padding: 20,
     backgroundColor: '#FFFFFF',
     paddingTop: 20,
-    // borderTopLeftRadius: 20,
-    // borderTopRightRadius: 20,
-    // shadowColor: '#000000',
-    // shadowOffset: {width: 0, height: 0},
-    // shadowRadius: 5,
-    // shadowOpacity: 0.4,
   },
+
   header: {
     backgroundColor: '#FFFFFF',
     shadowColor: '#333333',
     shadowOffset: {width: -1, height: -3},
     shadowRadius: 2,
     shadowOpacity: 0.4,
-    // elevation: 5,
     paddingTop: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
+
   panelHeader: {
     alignItems: 'center',
   },
+
   panelHandle: {
     width: 40,
     height: 8,
@@ -317,16 +306,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#00000040',
     marginBottom: 10,
   },
+
   panelTitle: {
     fontSize: 27,
     height: 35,
   },
+
   panelSubtitle: {
     fontSize: 14,
     color: 'gray',
     height: 30,
     marginBottom: 10,
   },
+
   panelButton: {
     padding: 13,
     borderRadius: 10,
@@ -334,19 +326,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 7,
   },
+
   panelButtonTitle: {
     fontSize: 17,
     fontWeight: 'bold',
     color: 'white',
   },
+
   action: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 10,
     marginBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#f2f2f2',
     paddingBottom: 5,
+    minWidth: 200,
+    width: '100%',
   },
+
   actionError: {
     flexDirection: 'row',
     marginTop: 10,
@@ -354,9 +352,28 @@ const styles = StyleSheet.create({
     borderBottomColor: '#FF0000',
     paddingBottom: 5,
   },
+
   textInput: {
     flex: 1,
     paddingLeft: 10,
     color: '#05375a',
+  },
+
+  IconContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 10,
+    paddingTop: 10,
+  },
+
+  IconWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1BA9FF',
+    maxWidth: 100,
+    maxHeight: 100,
+    borderRadius: 60,
   },
 });

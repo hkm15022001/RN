@@ -11,8 +11,7 @@ import AppStateStore from '../../store/state';
 import {BACKEND_API_URL} from '../../vars';
 
 const OrderDetail = ({route, navigation}) => {
-  // const {orderID} = route.params;
-  const orderID = 4947365;
+  const {orderID} = route.params;
   const validateToken = AppStateStore.useStoreActions(
     (actions) => actions.validateToken,
   );
