@@ -22,9 +22,14 @@ const OrderDetailShortShip = ({route, navigation}) => {
   }, [validateToken]);
 
   React.useEffect(() => {
-    fetchOrderLongShipData();
+    fetchOrderShortShipData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => fetchOrderShortShipData(), 10000);
+    return () => clearInterval(timer);
+  });
 
   const prepareArrayData = (orderShortShipInfo) => {
     let stateObject1 = {
@@ -121,7 +126,7 @@ const OrderDetailShortShip = ({route, navigation}) => {
     }
   };
 
-  const fetchOrderLongShipData = async () => {
+  const fetchOrderShortShipData = async () => {
     const requestOptions = {
       headers: {
         Authorization: accessToken,

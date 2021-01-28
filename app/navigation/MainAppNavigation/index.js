@@ -13,6 +13,7 @@ import HomeStackScreen from '../HomeStackScreen';
 import OrderStackScreen from '../OrderStackScreen';
 import ProfileStackScreen from '../ProfileStackScreen';
 import NotificationScreen from '../../screens/NotificationScreens/MainNotificatons';
+import LongShipScreen from '../../screens/LongShipScreens/MainLongShip';
 
 import SplashScreen from '../../screens/SplashScreen';
 import SignInScreen from '../../screens/SignInScreen';
@@ -113,7 +114,8 @@ async function createNotificationListeners() {
 /////////////////////////////// Firebase cloud messaging config ///////////////////////////////
 
 // Define parameter for Navigation
-const Tab = createBottomTabNavigator();
+const CustomerTab = createBottomTabNavigator();
+const EmployeeTab = createBottomTabNavigator();
 const AuthStack = createStackNavigator();
 
 export default function MainAppNavigation() {
@@ -123,6 +125,7 @@ export default function MainAppNavigation() {
   const isLoading = AppStateStore.useStoreState((state) => state.isLoading);
   const accessToken = AppStateStore.useStoreState((state) => state.accessToken);
   const isCustomer = AppStateStore.useStoreState((state) => state.isCustomer);
+  const isEmployee = AppStateStore.useStoreState((state) => state.isEmployee);
   const userContextInStore = AppStateStore.useStoreState(
     (state) => state.userContextInStore,
   );
@@ -177,7 +180,7 @@ export default function MainAppNavigation() {
       ) : (
         <UserContext.Provider value={[valueforContext, setValueforContext]}>
           {isCustomer === true ? (
-            <Tab.Navigator
+            <CustomerTab.Navigator
               tabBarOptions={{
                 showLabel: false,
                 activeTintColor: '#c98249',
@@ -186,7 +189,7 @@ export default function MainAppNavigation() {
                   paddingVertical: 5,
                 },
               }}>
-              <Tab.Screen
+              <CustomerTab.Screen
                 name="Home"
                 component={HomeStackScreen}
                 options={{
@@ -202,7 +205,7 @@ export default function MainAppNavigation() {
                 }}
               />
 
-              <Tab.Screen
+              <CustomerTab.Screen
                 name="Orders"
                 component={OrderStackScreen}
                 options={{
@@ -218,7 +221,7 @@ export default function MainAppNavigation() {
                 }}
               />
 
-              <Tab.Screen
+              <CustomerTab.Screen
                 name="Notifications"
                 component={NotificationScreen}
                 options={{
@@ -234,7 +237,7 @@ export default function MainAppNavigation() {
                 }}
               />
 
-              <Tab.Screen
+              <CustomerTab.Screen
                 name="Profiles"
                 component={ProfileStackScreen}
                 options={{
@@ -246,7 +249,36 @@ export default function MainAppNavigation() {
                   ),
                 }}
               />
-            </Tab.Navigator>
+            </CustomerTab.Navigator>
+          ) : (
+            <></>
+          )}
+          {isEmployee === true ? (
+            <EmployeeTab.Navigator
+              tabBarOptions={{
+                showLabel: false,
+                activeTintColor: '#c98249',
+                inactiveTintColor: 'gray',
+                tabStyle: {
+                  paddingVertical: 5,
+                },
+              }}>
+              <EmployeeTab.Screen
+                name="Home"
+                component={LongShipScreen}
+                options={{
+                  tabBarLabel: 'Home',
+                  tabBarColor: '#694fad',
+                  tabBarIcon: ({color}) => (
+                    <MaterialCommunityIcons
+                      name="home"
+                      color={color}
+                      size={26}
+                    />
+                  ),
+                }}
+              />
+            </EmployeeTab.Navigator>
           ) : (
             <></>
           )}

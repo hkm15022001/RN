@@ -1,12 +1,7 @@
-import React, {useContext, useState} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useContext} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
-import {
-  Avatar,
-  Title,
-  Caption,
-  Text,
-  TouchableRipple,
-} from 'react-native-paper';
+import {Title, Caption, Text, TouchableRipple} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconFeather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -39,7 +34,7 @@ const MainProfilesScreen = ({navigation}) => {
 
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
-          <FontAwesome name="id-card" color="#777777" size={20}></FontAwesome>
+          <FontAwesome name="id-card" color="#777777" size={20} />
           <Text style={{color: '#777777', marginLeft: 20, marginRight: 10}}>
             ID: {valueforContext.customer_id}
           </Text>

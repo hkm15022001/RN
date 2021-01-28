@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react';
 import {StyleSheet, View, Text, FlatList} from 'react-native';
 import IconFeather from 'react-native-vector-icons/Feather';
 import {Card} from 'react-native-shadow-cards';
+import {format} from 'date-fns';
 
 import AppStateStore from '../../store/state';
 import {BACKEND_API_URL} from '../../vars';
@@ -26,6 +27,14 @@ const MainNotifications = ({navigation}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  React.useEffect(() => {
+    const isFocused = navigation.isFocused();
+    if (isFocused === true) {
+      const timer = setInterval(() => fetchNotificationList(), 10000);
+      return () => clearInterval(timer);
+    }
+  });
+
   const fetchNotificationList = async () => {
     const requestOptions = {
       headers: {
@@ -47,6 +56,7 @@ const MainNotifications = ({navigation}) => {
       })
       .then((json) => {
         setCustomerNotifiationList(json.customer_notification_list);
+        console.log(123);
         setFetchingData(false);
       })
       .catch((err) => {
@@ -71,32 +81,19 @@ const MainNotifications = ({navigation}) => {
               <View style={styles.taskItemContainer}>
                 <Card style={styles.taskItem}>
                   <View style={styles.taskItemHeader}>
-                    <View
-                      style={[
-                        styles.IconWrapAccountContent,
-                        {
-                          backgroundColor: '#F5A623',
-                        },
-                      ]}>
-                      <IconFeather name="gift" color="#FFFFFF" size={20} />
+                    <View style={styles.IconWrapAccountContent}>
+                      <IconFeather name="gift" color="#FFF" size={20} />
                     </View>
-                    <View style={{paddingLeft: 10}}>
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          fontWeight: '700',
-                          color: '#1BA9FF',
-                        }}>
+                    <View style={styles.taskItemHeaderTitle}>
+                      <Text style={styles.taskItemHeaderTitleText}>
                         {item.title}
                       </Text>
-                      <Text style={{fontSize: 11, color: '#777777'}}>
-                        {item.created_at}
+                      <Text style={styles.taskItemDate}>
+                        {format(new Date(item.created_at * 1000), 'dd/MM/yyyy')}
                       </Text>
                     </View>
                   </View>
-                  <Text style={{fontSize: 16, color: '#777777'}}>
-                    {item.content}
-                  </Text>
+                  <Text style={styles.taskItemContent}>{item.content}</Text>
                 </Card>
               </View>
             )}
@@ -112,7 +109,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#f0f0f0',
   },
 
   taskItemContainer: {
@@ -129,9 +126,8 @@ const styles = StyleSheet.create({
   taskItem: {
     width: '95%',
     padding: 10,
-    borderColor: '#777777',
-    borderWidth: 0.5,
-    margin: 5,
+    marginHorizontal: 5,
+    marginBottom: 5,
     borderRadius: 5,
     shadowOpacity: 1,
     shadowRadius: 0,
@@ -146,14 +142,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 
+  taskItemHeaderTitle: {paddingLeft: 10},
+
+  taskItemHeaderTitleText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#1BA9FF',
+  },
+
+  taskItemDate: {fontSize: 11, color: '#777'},
+
+  taskItemContent: {fontSize: 16, color: '#777'},
+
   IconWrapAccountContent: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
     minWidth: 30,
     minHeight: 30,
     borderRadius: 60,
+    backgroundColor: '#F5A623',
   },
 
   headerContainer: {

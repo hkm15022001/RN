@@ -23,11 +23,19 @@ const OrderList = ({navigation}) => {
   }, [validateToken]);
 
   React.useEffect(() => {
-    fetchNotificationList();
+    fetchOrderList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const fetchNotificationList = async () => {
+  React.useEffect(() => {
+    const isFocused = navigation.isFocused();
+    if (isFocused === true) {
+      const timer = setInterval(() => fetchOrderList(), 10000);
+      return () => clearInterval(timer);
+    }
+  });
+
+  const fetchOrderList = async () => {
     const requestOptions = {
       headers: {
         Authorization: accessToken,
@@ -66,6 +74,7 @@ const OrderList = ({navigation}) => {
       ) : (
         <>
           <FlatList
+            style={styles.taskList}
             numColumns={1}
             keyExtractor={(item) => item.id.toString()}
             data={orderList}
@@ -78,55 +87,30 @@ const OrderList = ({navigation}) => {
                   })
                 }>
                 <Card style={styles.item}>
-                  <View
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      flexDirection: 'row',
-                    }}>
-                    <Text style={{color: '#000000', fontSize: 14}}>
-                      Order id: {item.id}
-                    </Text>
-                    <View style={{paddingRight: 5}}>
-                      <View
-                        style={{
-                          justifyContent: 'space-between',
-                          flexDirection: 'row',
-                        }}>
-                        <Text style={{color: '#666666', fontSize: 11}}>
-                          Created date:{' '}
-                          {format(
-                            new Date(item.created_at * 1000),
-                            'dd/MM/yyyy',
-                          )}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      paddingTop: 10,
-                      paddingBottom: 10,
-                      justifyContent: 'flex-start',
-                      flexDirection: 'row',
-                      paddingRight: 10,
-                    }}>
+                  <View style={styles.orderCardDetailContainer}>
                     <Image
                       source={require('./Transportation.jpg')}
-                      style={{width: 80, height: 80, borderRadius: 10}}
+                      style={styles.orderCardDetailImage}
                     />
-                    <View style={{paddingLeft: 20, justifyContent: 'center'}}>
+                    <View>
                       <Text
-                        style={{
-                          fontSize: 16,
-                          fontWeight: 'bold',
-                          paddingBottom: 10,
-                        }}>
+                        ellipsizeMode="tail"
+                        numberOfLines={1}
+                        style={styles.orderCardDetail}>
                         {item.detail}
                       </Text>
-                      <Text style={{fontSize: 14, color: '#666666'}}>
-                        {item.receiver}
+                      <Text style={styles.orderCardDetailText}>
+                        Order id: {item.id}
+                      </Text>
+                      <Text style={styles.orderCardDetailText}>
+                        {'Date: '}
+                        {format(new Date(item.created_at * 1000), 'dd/MM/yyyy')}
+                      </Text>
+                      <Text
+                        ellipsizeMode="tail"
+                        numberOfLines={1}
+                        style={styles.orderCardDetailReceiver}>
+                        Receiver: {item.receiver}
                       </Text>
                     </View>
                   </View>
@@ -142,18 +126,10 @@ const OrderList = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#f0f0f0',
     width: '100%',
     alignItems: 'center',
-  },
-
-  item: {
-    width: '95%',
-    padding: 5,
-    marginTop: 15,
-    borderWidth: 0.5,
-    borderColor: '#777777',
-    overflow: 'hidden',
+    paddingTop: 5,
   },
 
   headerContainer: {
@@ -171,6 +147,45 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: '500',
     backgroundColor: '#fff',
+  },
+
+  taskList: {
+    flex: 1,
+    backgroundColor: '#f0f0f0',
+  },
+
+  item: {
+    width: '95%',
+    marginHorizontal: 5,
+    marginBottom: 5,
+    overflow: 'hidden',
+  },
+
+  orderCardDetailContainer: {
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    padding: 10,
+  },
+
+  orderCardDetailImage: {
+    width: 85,
+    height: 85,
+    borderRadius: 10,
+    marginRight: 10,
+  },
+
+  orderCardDetail: {
+    width: '60%',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  orderCardDetailText: {fontSize: 14, color: '#666'},
+
+  orderCardDetailReceiver: {
+    width: '60%',
+    fontSize: 14,
+    color: '#666',
   },
 });
 

@@ -26,6 +26,11 @@ const OrderDetailLongShip = ({route, navigation}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  React.useEffect(() => {
+    const timer = setInterval(() => fetchOrderLongShipData(), 10000);
+    return () => clearInterval(timer);
+  });
+
   const prepareArrayData = (longShipInfo) => {
     let stateObject1 = {
       time: '',
