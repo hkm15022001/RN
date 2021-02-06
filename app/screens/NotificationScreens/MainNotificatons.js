@@ -1,5 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {StyleSheet, View, Text, FlatList} from 'react-native';
+import {useIsFocused} from '@react-navigation/native';
 import IconFeather from 'react-native-vector-icons/Feather';
 import {Card} from 'react-native-shadow-cards';
 import {format} from 'date-fns';
@@ -17,6 +18,7 @@ const MainNotifications = ({navigation}) => {
   const accessToken = AppStateStore.useStoreState((state) => state.accessToken);
   const [customerNotifiationList, setCustomerNotifiationList] = useState(null);
   const [fetchingData, setFetchingData] = useState(true);
+  const isFocused = useIsFocused();
 
   React.useEffect(() => {
     validateToken();
@@ -28,7 +30,6 @@ const MainNotifications = ({navigation}) => {
   }, []);
 
   React.useEffect(() => {
-    const isFocused = navigation.isFocused();
     if (isFocused === true) {
       const timer = setInterval(() => fetchNotificationList(), 10000);
       return () => clearInterval(timer);

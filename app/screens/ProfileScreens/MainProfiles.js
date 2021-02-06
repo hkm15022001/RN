@@ -1,16 +1,59 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {View, SafeAreaView, StyleSheet} from 'react-native';
-import {Title, Caption, Text, TouchableRipple} from 'react-native-paper';
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import {Title, Text, TouchableRipple} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconFeather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import UserContext from '../../context/UserContext';
+import AppStateStore from '../../store/state';
+import {BACKEND_API_URL} from '../../vars';
 
 const MainProfilesScreen = ({navigation}) => {
+  const validateToken = AppStateStore.useStoreActions(
+    (actions) => actions.validateToken,
+  );
+
+  const accessToken = AppStateStore.useStoreState((state) => state.accessToken);
+  const signOut = AppStateStore.useStoreActions((actions) => actions.signOut);
   const [valueforContext] = useContext(UserContext);
+
+  React.useEffect(() => {
+    validateToken();
+  }, [validateToken]);
+
+  function handleLogout() {
+    fetch(BACKEND_API_URL + '/app-auth/logout', {
+      headers: {
+        Authorization: accessToken,
+      },
+      method: 'GET',
+    })
+      .then((res) => {
+        if (res.status !== 200) {
+          return Promise.reject('Bad request sent to server!');
+        }
+        return res.json();
+      })
+      .then((json) => {
+        signOut();
+      })
+      .catch((error) => {
+        Alert.alert(JSON.stringify(error));
+      });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.textHeader}>Profile</Text>
+      </View>
       <View style={styles.userInfoSection}>
         <View style={styles.PeopleInfo}>
           <View style={styles.IconWrap}>
@@ -25,9 +68,8 @@ const MainProfilesScreen = ({navigation}) => {
                   marginBottom: 5,
                 },
               ]}>
-              Hoa Bui Gia
+              {valueforContext.name}
             </Title>
-            <Caption style={styles.caption}>Hoa Bui</Caption>
           </View>
         </View>
       </View>
@@ -35,13 +77,13 @@ const MainProfilesScreen = ({navigation}) => {
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
           <FontAwesome name="id-card" color="#777777" size={20} />
-          <Text style={{color: '#777777', marginLeft: 20, marginRight: 10}}>
-            ID: {valueforContext.customer_id}
+          <Text style={{color: '#777777', marginLeft: 10, marginRight: 10}}>
+            ID: {valueforContext.customer_id || valueforContext.employee_id}
           </Text>
         </View>
         <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20} />
-          <Text style={{color: '#777777', marginLeft: 20, marginRight: 10}}>
+          <Text style={{color: '#777777', marginLeft: 10, marginRight: 10}}>
             Phone: {valueforContext.phone}
           </Text>
           <Icon
@@ -51,10 +93,18 @@ const MainProfilesScreen = ({navigation}) => {
             onPress={() => navigation.navigate('Edit Profile')}
           />
         </View>
+        <TouchableOpacity onPress={() => handleLogout()}>
+          <View style={styles.row}>
+            <FontAwesome name="sign-out" color="#777777" size={20} />
+            <Text style={{color: '#777777', marginLeft: 10, marginRight: 10}}>
+              Sign out
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.menuWrapper}>
-        <Text style={styles.AccountTitle}>Account</Text>
+        <Text style={styles.AccountTitle}>Account setting</Text>
 
         <TouchableRipple
           style={styles.menuItemContainer}
@@ -155,8 +205,7 @@ const styles = StyleSheet.create({
   },
 
   userInfoSection: {
-    paddingHorizontal: 30,
-    marginBottom: 25,
+    paddingHorizontal: 20,
   },
 
   title: {
@@ -172,7 +221,8 @@ const styles = StyleSheet.create({
 
   row: {
     flexDirection: 'row',
-    marginBottom: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
   },
 
   infoBoxWrapper: {
@@ -191,7 +241,7 @@ const styles = StyleSheet.create({
   },
 
   menuWrapper: {
-    marginTop: 10,
+    paddingHorizontal: 20,
   },
 
   menuItemContainer: {
@@ -202,7 +252,7 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: 'row',
     paddingVertical: 15,
-    paddingHorizontal: 30,
+    paddingHorizontal: 15,
   },
   menuItemText: {
     color: '#777777',
@@ -238,10 +288,9 @@ const styles = StyleSheet.create({
 
   AccountTitle: {
     flexDirection: 'row',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 
   IconWrapAccountContent: {
@@ -261,6 +310,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingRight: 10,
+  },
+
+  headerContainer: {
+    height: 57,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    borderBottomWidth: 2,
+    borderBottomColor: '#e3e3e3',
+  },
+
+  textHeader: {
+    textAlign: 'center',
+    margin: 'auto',
+    fontSize: 25,
+    fontWeight: '500',
+    backgroundColor: '#fff',
   },
 });
 

@@ -1,5 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {StyleSheet, View, Text, FlatList, Image} from 'react-native';
+import {useIsFocused} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Card} from 'react-native-shadow-cards';
 import {format} from 'date-fns';
@@ -17,6 +18,7 @@ const OrderList = ({navigation}) => {
   const accessToken = AppStateStore.useStoreState((state) => state.accessToken);
   const [orderList, setOrderList] = useState(null);
   const [fetchingData, setFetchingData] = useState(true);
+  const isFocused = useIsFocused();
 
   React.useEffect(() => {
     validateToken();
@@ -28,7 +30,6 @@ const OrderList = ({navigation}) => {
   }, []);
 
   React.useEffect(() => {
-    const isFocused = navigation.isFocused();
     if (isFocused === true) {
       const timer = setInterval(() => fetchOrderList(), 10000);
       return () => clearInterval(timer);

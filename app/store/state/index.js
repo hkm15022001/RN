@@ -258,6 +258,10 @@ const AppStateStore = createContextStore(
       }
     }),
     signOut: action((state) => {
+      let emptyJson = {};
+      emptyJson.access_token = null;
+      emptyJson.refresh_token = null;
+      setTokenInfo(emptyJson);
       state.isLoading = false;
       state.isSignout = true;
       state.accessToken = null;

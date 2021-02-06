@@ -278,6 +278,18 @@ export default function MainAppNavigation() {
                   ),
                 }}
               />
+              <CustomerTab.Screen
+                name="Profiles"
+                component={ProfileStackScreen}
+                options={{
+                  tabBarLabel: 'Profiles',
+                  tabBarColor: '#694fad',
+                  // tabBarVisible: false, sử dụng biến truyền component con sang cha để gán giá trị
+                  tabBarIcon: ({color}) => (
+                    <EvilIcons name="navicon" color={color} size={26} />
+                  ),
+                }}
+              />
             </EmployeeTab.Navigator>
           ) : (
             <></>
