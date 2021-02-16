@@ -31,10 +31,14 @@ const MainNotifications = ({navigation}) => {
 
   React.useEffect(() => {
     if (isFocused === true) {
-      const timer = setInterval(() => fetchNotificationList(), 10000);
+      const timer = setInterval(() => fetchNotificationList(), 30000);
       return () => clearInterval(timer);
     }
-  });
+    return () => {
+      setCustomerNotifiationList([]); // This worked for me
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFocused]);
 
   const fetchNotificationList = async () => {
     const requestOptions = {
@@ -57,7 +61,6 @@ const MainNotifications = ({navigation}) => {
       })
       .then((json) => {
         setCustomerNotifiationList(json.customer_notification_list);
-        console.log(123);
         setFetchingData(false);
       })
       .catch((err) => {
@@ -87,10 +90,11 @@ const MainNotifications = ({navigation}) => {
                     </View>
                     <View style={styles.taskItemHeaderTitle}>
                       <Text style={styles.taskItemHeaderTitleText}>
-                        {item.title}
-                      </Text>
-                      <Text style={styles.taskItemDate}>
-                        {format(new Date(item.created_at * 1000), 'dd/MM/yyyy')}
+                        {item.title} {'at '}
+                        {format(
+                          new Date(item.created_at * 1000),
+                          'HH:mm dd/MM/yy',
+                        )}
                       </Text>
                     </View>
                   </View>
@@ -146,14 +150,14 @@ const styles = StyleSheet.create({
   taskItemHeaderTitle: {paddingLeft: 10},
 
   taskItemHeaderTitleText: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#1BA9FF',
+    fontSize: 14,
+    color: '#8c4d00',
+    maxWidth: '95%',
   },
 
-  taskItemDate: {fontSize: 11, color: '#777'},
+  taskItemDate: {fontSize: 12, color: '#777'},
 
-  taskItemContent: {fontSize: 16, color: '#777'},
+  taskItemContent: {fontSize: 14, color: '#000'},
 
   IconWrapAccountContent: {
     display: 'flex',

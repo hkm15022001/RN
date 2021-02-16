@@ -52,7 +52,7 @@ const CreateOrderScreen = ({route, navigation}) => {
   const [receiverName, setReceiverName] = useState('Tuan');
   const [receiverAddress, setReceiverAddress] = useState('123 Tran Nao');
   const [receiverPhone, setReceiverPhone] = useState(234);
-  const [packageDetail, setPackageDetail] = useState('May vi tinh ca nha');
+  const [packageDetail, setPackageDetail] = useState('May vi tinh ca nhan');
   const [packageNote, setPackageNote] = useState('Giao hang vao buoi trua');
 
   const [orderCreatedID, setOrderCreatedID] = useState(0);
@@ -71,14 +71,18 @@ const CreateOrderScreen = ({route, navigation}) => {
       compressImageMaxHeight: 300,
       cropping: true,
       compressImageQuality: 0.7,
-    }).then((_image) => {
-      setImage({
-        uri: _image.path,
-        width: _image.width,
-        height: _image.height,
-        mime: _image.mime,
+    })
+      .then((_image) => {
+        setImage({
+          uri: _image.path,
+          width: _image.width,
+          height: _image.height,
+          mime: _image.mime,
+        });
+      })
+      .catch((err) => {
+        console.log('openCamera catch' + err.toString());
       });
-    });
   };
 
   const submitImage = async () => {

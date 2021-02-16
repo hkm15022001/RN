@@ -112,7 +112,7 @@ const OrderDetail = ({route, navigation}) => {
               <Text style={styles.customerDetail}>Note: {orderInfo.note}</Text>
             </View>
             <View style={styles.customerLabelContainer}>
-              <Text style={styles.customerLabel}>Transport information</Text>
+              <Text style={styles.customerLabel}>Transport info:</Text>
             </View>
             <View style={styles.customerDetailContainer}>
               <Text style={styles.customerDetail}>
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
 
   childContainer: {
     paddingHorizontal: 20,
-    paddingTop: 5,
+    paddingVertical: 5,
     backgroundColor: '#fff',
     borderRadius: 10,
     marginHorizontal: 10,
@@ -246,7 +246,6 @@ const styles = StyleSheet.create({
   customerDetail: {
     fontSize: 14,
     color: '#000000',
-    paddingBottom: 5,
   },
 
   createButtonContainer: {

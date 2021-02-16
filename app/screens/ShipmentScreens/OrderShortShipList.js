@@ -7,10 +7,9 @@ import {format} from 'date-fns';
 
 import AppStateStore from '../../store/state';
 import {BACKEND_API_URL} from '../../vars';
-import {BACKEND_API_IMAGE_URL} from '../../vars';
 import UserContext from '../../context/UserContext';
 
-const OrderList = ({navigation}) => {
+const OrderShortShipList = ({navigation}) => {
   const validateToken = AppStateStore.useStoreActions(
     (actions) => actions.validateToken,
   );
@@ -20,6 +19,7 @@ const OrderList = ({navigation}) => {
   const [orderList, setOrderList] = useState(null);
   const [fetchingData, setFetchingData] = useState(true);
   const isFocused = useIsFocused();
+  const imageSource = require('./Transportation.jpg');
 
   React.useEffect(() => {
     validateToken();
@@ -35,7 +35,7 @@ const OrderList = ({navigation}) => {
 
   React.useEffect(() => {
     if (isFocused === true) {
-      const timer = setInterval(() => fetchOrderList(), 10000);
+      const timer = setInterval(() => fetchOrderList(), 30000);
       return () => clearInterval(timer);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,8 +50,8 @@ const OrderList = ({navigation}) => {
     };
     return await fetch(
       BACKEND_API_URL +
-        '/api/order/list/customer-id/' +
-        userContextValue.customer_id,
+        '/api/order-short-ship/list/employee-id/' +
+        userContextValue.employee_id,
       requestOptions,
     )
       .then((res) => {
@@ -61,8 +61,8 @@ const OrderList = ({navigation}) => {
         return res.json();
       })
       .then((json) => {
-        setOrderList(json.order_info_list);
-        console.log(json.order_info_list);
+        setOrderList(json.order_short_ship_list);
+        console.log(json.order_short_ship_list);
         setFetchingData(false);
       })
       .catch((err) => {
@@ -72,9 +72,6 @@ const OrderList = ({navigation}) => {
 
   return (
     <>
-      <View style={styles.headerContainer}>
-        <Text style={styles.textHeader}>Your orders</Text>
-      </View>
       {fetchingData ? (
         <></>
       ) : (
@@ -88,37 +85,43 @@ const OrderList = ({navigation}) => {
               <TouchableOpacity
                 style={styles.container}
                 onPress={() =>
-                  navigation.navigate('Order detail', {
-                    orderID: item.id,
+                  navigation.navigate('Order short ship', {
+                    orderShortShipID: item.id,
                   })
                 }>
                 <Card style={styles.item}>
                   <View style={styles.orderCardDetailContainer}>
                     <Image
-                      source={{
-                        uri: BACKEND_API_IMAGE_URL + item.image,
-                      }}
+                      source={imageSource}
                       style={styles.orderCardDetailImage}
                     />
                     <View>
+                      <Text style={styles.orderCardDetail}>
+                        Order ID {item.order_id} {'- '}
+                        {format(
+                          new Date(item.created_at * 1000),
+                          'HH:mm dd/MM/yy',
+                        )}
+                      </Text>
                       <Text
                         ellipsizeMode="tail"
                         numberOfLines={1}
-                        style={styles.orderCardDetail}>
-                        {item.detail}
-                      </Text>
-                      <Text style={styles.orderCardDetailText}>
-                        Order id: {item.id}
-                      </Text>
-                      <Text style={styles.orderCardDetailText}>
-                        {'Date: '}
-                        {format(new Date(item.created_at * 1000), 'dd/MM/yyyy')}
+                        style={styles.orderCardDetailReceiver}>
+                        Sender: {item.sender}
                       </Text>
                       <Text
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={styles.orderCardDetailReceiver}>
                         Receiver: {item.receiver}
+                      </Text>
+                      <Text style={styles.orderCardDetailReceiver}>
+                        Status:{' '}
+                        {item.canceled
+                          ? 'Canceled'
+                          : item.finished
+                          ? 'Finished'
+                          : 'Running'}
                       </Text>
                     </View>
                   </View>
@@ -183,7 +186,6 @@ const styles = StyleSheet.create({
   },
 
   orderCardDetail: {
-    width: '45%',
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -197,4 +199,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderList;
+export default OrderShortShipList;

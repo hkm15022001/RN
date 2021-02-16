@@ -7,6 +7,7 @@ import AppStateStore from '../../store/state';
 const LeftContent = (props) => <Avatar.Icon {...props} icon="check" />;
 
 import {BACKEND_API_URL} from '../../vars';
+import {BACKEND_API_IMAGE_URL} from '../../vars';
 
 const HomeScreen = ({navigation}) => {
   const validateToken = AppStateStore.useStoreActions(
@@ -148,8 +149,13 @@ const HomeScreen = ({navigation}) => {
               <Card.Content>
                 <Paragraph>{item.content}</Paragraph>
               </Card.Content>
-              <Card.Cover
+              {/* <Card.Cover
                 source={require('../../assets/picture/voucher.jpg')}
+              /> */}
+              <Card.Cover
+                source={{
+                  uri: BACKEND_API_IMAGE_URL + 'voucher.jpg',
+                }}
               />
               <Card.Actions style={styles.cardAction}>
                 <Button

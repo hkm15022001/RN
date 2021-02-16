@@ -13,7 +13,7 @@ import HomeStackScreen from '../HomeStackScreen';
 import OrderStackScreen from '../OrderStackScreen';
 import ProfileStackScreen from '../ProfileStackScreen';
 import NotificationScreen from '../../screens/NotificationScreens/MainNotificatons';
-import LongShipScreen from '../../screens/LongShipScreens/MainLongShip';
+import ShipmentScreen from '../ShipmentStackScreen';
 
 import SplashScreen from '../../screens/SplashScreen';
 import SignInScreen from '../../screens/SignInScreen';
@@ -265,7 +265,7 @@ export default function MainAppNavigation() {
               }}>
               <EmployeeTab.Screen
                 name="Home"
-                component={LongShipScreen}
+                component={ShipmentScreen}
                 options={{
                   tabBarLabel: 'Home',
                   tabBarColor: '#694fad',

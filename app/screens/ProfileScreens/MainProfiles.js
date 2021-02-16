@@ -45,6 +45,7 @@ const MainProfilesScreen = ({navigation}) => {
         signOut();
       })
       .catch((error) => {
+        signOut();
         Alert.alert(JSON.stringify(error));
       });
   }
