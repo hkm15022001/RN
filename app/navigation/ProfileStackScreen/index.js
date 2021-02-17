@@ -6,6 +6,7 @@ import EditProfileScreen from '../../screens/ProfileScreens/EditProfileScreens';
 import IntroduceScreen from '../../screens/ProfileScreens/IntroduceScreen';
 import HowToUseScreen from '../../screens/ProfileScreens/HowToUseScreen';
 import SettingsScreen from '../../screens/ProfileScreens/SettingsScreen';
+import SplashScreen from '../../screens/SplashScreen';
 
 const ProfileStack = createStackNavigator();
 
@@ -17,14 +18,11 @@ export default function ProfileStackScreen() {
         name="Profile"
         component={ProfileScreen}
       />
-
       <ProfileStack.Screen name="Edit Profile" component={EditProfileScreen} />
-
       <ProfileStack.Screen name="Introduce" component={IntroduceScreen} />
-
       <ProfileStack.Screen name="How to use" component={HowToUseScreen} />
-
       <ProfileStack.Screen name="Settings" component={SettingsScreen} />
+      <ProfileStack.Screen name="SplashScreen" component={SplashScreen} />
     </ProfileStack.Navigator>
   );
 }

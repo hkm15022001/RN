@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {StyleSheet, View, Text, FlatList, Image} from 'react-native';
+import {StyleSheet, View, Text, FlatList, Image, Alert} from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Card} from 'react-native-shadow-cards';
@@ -26,16 +26,15 @@ const OrderList = ({navigation}) => {
   }, [validateToken]);
 
   React.useEffect(() => {
-    fetchOrderList();
     return () => {
       setOrderList([]); // This worked for me
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
     if (isFocused === true) {
-      const timer = setInterval(() => fetchOrderList(), 10000);
+      fetchOrderList();
+      const timer = setInterval(() => fetchOrderList(), 60000);
       return () => clearInterval(timer);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,11 +61,10 @@ const OrderList = ({navigation}) => {
       })
       .then((json) => {
         setOrderList(json.order_info_list);
-        console.log(json.order_info_list);
         setFetchingData(false);
       })
       .catch((err) => {
-        console.log(err);
+        Alert.alert(JSON.stringify(err));
       });
   };
 

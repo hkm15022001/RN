@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, SafeAreaView} from 'react-native';
+import {StyleSheet, SafeAreaView, Alert} from 'react-native';
 import Timeline from 'react-native-timeline-flatlist';
 import {format} from 'date-fns';
 
@@ -149,7 +149,7 @@ const OrderDetailShortShip = ({route, navigation}) => {
         setFetchingData(false);
       })
       .catch((err) => {
-        console.log(err);
+        Alert.alert(JSON.stringify(err));
       });
   };
 

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Avatar, Chip, Card, Button, Paragraph, FAB} from 'react-native-paper';
-import {StyleSheet, View, Text, FlatList, Animated} from 'react-native';
+import {StyleSheet, View, Text, FlatList, Animated, Alert} from 'react-native';
 import {format} from 'date-fns';
 import AppStateStore from '../../store/state';
 
@@ -19,11 +19,6 @@ const HomeScreen = ({navigation}) => {
     validateToken();
   }, [validateToken]);
 
-  React.useEffect(() => {
-    fetchVoucherData('');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // Source: https://github.com/mukeshphulwani66/Youtube-clone-React-Native/blob/master/src/screens/Home.js
   // Youtube: https://www.youtube.com/watch?v=mvxgWuxwnik
   // Hide header when scroll up
@@ -33,6 +28,14 @@ const HomeScreen = ({navigation}) => {
     inputRange: [0, 101],
     outputRange: [0, -101],
   });
+
+  React.useEffect(() => {
+    fetchVoucherData('');
+    return () => {
+      setDataVoucher([]);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [dataVoucher, setDataVoucher] = useState([]);
   const [sortCondition, setsortCondition] = useState('');
@@ -87,8 +90,8 @@ const HomeScreen = ({navigation}) => {
         arrayJson.forEach(parseArray);
         setDataVoucher(arrayJson);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        Alert.alert(JSON.stringify(error));
       });
   };
 

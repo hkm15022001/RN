@@ -66,7 +66,7 @@ const OrderShortShip = ({route, navigation}) => {
         setFetchingData(false);
       })
       .catch((err) => {
-        console.log(err);
+        Alert.alert(JSON.stringify(err));
       });
   };
 

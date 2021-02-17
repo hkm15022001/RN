@@ -11,8 +11,8 @@ import {
 import AppStateStore from '../../store/state';
 import {BACKEND_API_URL} from '../../vars';
 
-export default function SignInScreen() {
-  const [email, setEmail] = React.useState('deliverystaff@gmail.com');
+export default function SignInScreen({navigation}) {
+  const [email, setEmail] = React.useState('customer@gmail.com');
   const [password, setPassword] = React.useState('12345678');
 
   const signIn = AppStateStore.useStoreActions((actions) => actions.signIn);

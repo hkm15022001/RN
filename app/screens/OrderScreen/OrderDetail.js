@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import AppStateStore from '../../store/state';
@@ -47,11 +48,10 @@ const OrderDetail = ({route, navigation}) => {
       })
       .then((json) => {
         setorderInfo(json.order_info);
-        console.log(json.order_info);
         setFetchingData(false);
       })
       .catch((err) => {
-        console.log(err);
+        Alert.alert(JSON.stringify(err));
       });
   };
   return (

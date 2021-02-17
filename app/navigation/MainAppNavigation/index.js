@@ -79,6 +79,7 @@ async function createNotificationListeners() {
    * */
   messaging().onMessage(async (remoteMessage) => {
     console.log(remoteMessage);
+    console.log(1233);
     // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
 
     PushNotification.localNotification({
@@ -160,7 +161,6 @@ export default function MainAppNavigation() {
       messaging().onTokenRefresh((appToken) => {
         saveTokenToDatabase(accessToken, appToken);
       });
-      createNotificationListeners();
     };
   }, [accessToken]);
 

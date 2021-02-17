@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {StyleSheet, View, Text, FlatList} from 'react-native';
+import {StyleSheet, View, Text, FlatList, Alert} from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import IconFeather from 'react-native-vector-icons/Feather';
 import {Card} from 'react-native-shadow-cards';
@@ -25,18 +25,17 @@ const MainNotifications = ({navigation}) => {
   }, [validateToken]);
 
   React.useEffect(() => {
-    fetchNotificationList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      setCustomerNotifiationList([]); // This worked for me
+    };
   }, []);
 
   React.useEffect(() => {
     if (isFocused === true) {
-      const timer = setInterval(() => fetchNotificationList(), 30000);
+      fetchNotificationList();
+      const timer = setInterval(() => fetchNotificationList(), 60000);
       return () => clearInterval(timer);
     }
-    return () => {
-      setCustomerNotifiationList([]); // This worked for me
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
@@ -64,7 +63,7 @@ const MainNotifications = ({navigation}) => {
         setFetchingData(false);
       })
       .catch((err) => {
-        console.log(err);
+        Alert.alert(JSON.stringify(err));
       });
   };
   return (

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 
 import {StyleSheet, Text, Modal, SafeAreaView, Alert} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -8,10 +8,8 @@ import {View} from 'react-native';
 
 import AppStateStore from '../../store/state';
 import {BACKEND_API_URL} from '../../vars';
-import UserContext from '../../context/UserContext';
 
 const LongShip = ({navigation}) => {
-  const [userContextValue] = useContext(UserContext);
   const validateToken = AppStateStore.useStoreActions(
     (actions) => actions.validateToken,
   );
@@ -19,8 +17,6 @@ const LongShip = ({navigation}) => {
   React.useEffect(() => {
     validateToken();
   }, [validateToken]);
-
-  const [employeeId, setEmployeeId] = useState(userContextValue.employee_id);
 
   const [showMenu, setShowMenu] = useState(false);
   const [data, setData] = useState(null);
@@ -67,8 +63,12 @@ const LongShip = ({navigation}) => {
         }
         return res.json();
       })
-      .then((data2) => console.log(data2))
+      .then((data2) => {
+        navigation.goBack();
+        Alert.alert(JSON.stringify(data2.server_response));
+      })
       .catch((error) => {
+        navigation.goBack();
         Alert.alert(JSON.stringify(error));
       });
   };

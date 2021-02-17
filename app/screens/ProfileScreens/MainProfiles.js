@@ -14,6 +14,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import UserContext from '../../context/UserContext';
 import AppStateStore from '../../store/state';
 import {BACKEND_API_URL} from '../../vars';
+import {CommonActions} from '@react-navigation/native';
 
 const MainProfilesScreen = ({navigation}) => {
   const validateToken = AppStateStore.useStoreActions(
@@ -48,6 +49,13 @@ const MainProfilesScreen = ({navigation}) => {
         signOut();
         Alert.alert(JSON.stringify(error));
       });
+
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{name: 'SplashScreen'}],
+      }),
+    );
   }
 
   return (

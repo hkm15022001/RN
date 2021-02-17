@@ -14,7 +14,7 @@ export default function ShipmentStackScreen() {
     <ShipmentStackStack.Navigator>
       <ShipmentStackStack.Screen
         options={{headerShown: false}}
-        name="Main"
+        name="Home"
         component={MainShipment}
       />
       <ShipmentStackStack.Screen name="LongShip" component={LongShip} />
