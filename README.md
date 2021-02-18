@@ -11,7 +11,7 @@ Please read this documentation for more information [React Native Environment Se
 In the project directory, you can run:
 
 ### `npm install` to download node_modules
-### `react-native run-android` to start Metro server nad run Daemon device
+### `react-native run-android` to start Metro server and run Daemon device
 
 **Note: config back-end API in app/var.js!**
 
