@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [React Native App](https://github.com/facebook/react-native).
 
+## Requirements
+
+Please read this documentation for more information [React Native Environment Setup](https://reactnative.dev/docs/environment-setup)
+
 ## Available Scripts
 
 In the project directory, you can run:
